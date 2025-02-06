@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <Stack.Screen options={{ title: 'Tab One' }} />
       <FlatList
-        data={towingReports.towing_reports}
+        data={towingReports}
         renderItem={({ item }) => (
           <View>
             <TRListItem report={item} />
