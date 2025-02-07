@@ -1,12 +1,11 @@
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Button, Pressable, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
 export default function Account() {
   const [username, setUsername] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
   const { session } = useAuth();
 
   const [loading, setLoading] = useState(true);
