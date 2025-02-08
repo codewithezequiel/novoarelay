@@ -62,7 +62,7 @@ export default function CompanyAuth() {
       // Step 2: Create the company
       const { data: company, error: companyError } = await supabase
         .from('companies')
-        .insert([{ name: companyName }])
+        .insert([{ name: companyName, created_by: userData.user.id }])
         .select()
         .single();
 
