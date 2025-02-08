@@ -9,7 +9,7 @@ export default function TabLayout() {
   console.warn(isAuthenticated);
 
   if (!isAuthenticated) {
-    return <Redirect href={'/company/login'} />;
+    return <Redirect href={'/company/newLogin'} />;
   }
 
   return (
