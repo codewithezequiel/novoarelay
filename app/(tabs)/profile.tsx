@@ -11,9 +11,13 @@ export default function Account() {
   const [loading, setLoading] = useState(true);
 
   const [website, setWebsite] = useState('');
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    if (session) getProfile();
+    if (session) {
+      getProfile();
+      checksUserRoleInDB(); // Fetch user role
+    }
   }, [session]);
 
   async function getProfile() {
@@ -69,6 +73,24 @@ export default function Account() {
       setLoading(false);
     }
   }
+
+  async function checksUserRoleInDB() {
+    try {
+      if (!session.user) throw new Error('No user in the session');
+      const { data, error, status } = await supabase
+        .from('profiles')
+        .select(`role`)
+        .eq('id', session.user.id)
+        .single();
+      if (error && status !== 406) {
+        throw error;
+      }
+      if (data?.role) setRole(data.role);
+    } catch (err) {
+      Alert.alert(err instanceof Error ? err.message : 'Error fetching profile');
+    }
+  }
+
   return (
     <View>
       <Stack.Screen options={{ title: 'Profile' }} />
@@ -94,14 +116,29 @@ export default function Account() {
         editable={false}
         autoCapitalize="none"
       />
+      {role === 'admin' ? (
+        <View className="mx-5 mt-6">
+          <Text className="text-xl font-semibold text-gray-800">Admin Dashboard</Text>
+          <Pressable className="mt-4 rounded-lg bg-orange-400 p-3">
+            <Text className="text-center text-lg text-white">Invite Employee</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <View className="mx-5 mt-6">
+          <Text className="text-xl font-semibold text-gray-800">Employee Dashboard</Text>
+          <Pressable className="mt-4 rounded-lg bg-green-400 p-3">
+            <Text className="text-center text-lg text-white">View Tasks</Text>
+          </Pressable>
+        </View>
+      )}
+
       <View>
         <Pressable
           disabled={loading}
           onPress={() => updateProfile({ username, website })}
-          className="mx-5 mt-10 items-center rounded-md bg-indigo-400 p-3 px-5">
+          className="mx-5 mt-5 items-center rounded-md bg-indigo-400 p-3 px-5">
           <Text className="text-lg  font-bold text-white">Update Profile</Text>
         </Pressable>
-
         <Pressable
           disabled={loading}
           onPress={() => supabase.auth.signOut()}
