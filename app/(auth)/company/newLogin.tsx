@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, View, TextInput, TouchableOpacity, Text, AppState } from 'react-native';
 import { supabase } from '~/utils/supabase';
-import { Redirect, Stack, useRouter } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 
 // Start Supabase Auth session management
 AppState.addEventListener('change', (state) => {
@@ -18,7 +18,7 @@ export default function CompanyAuth() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between sign-in and sign-up
-  const router = useRouter();
+  const [redirectToEmployeeLogin, setRedirectToEmployeeLogin] = useState(false);
 
   useEffect(() => {
     // Check if the user is already signed in and redirect
@@ -119,6 +119,10 @@ export default function CompanyAuth() {
     setLoading(false);
   }
 
+  if (redirectToEmployeeLogin) {
+    return <Redirect href="/(auth)/employees/login" />;
+  }
+
   return (
     <View className="flex flex-1 items-center justify-center bg-gray-100 px-6">
       <Stack.Screen options={{ title: isSignUp ? 'Company Registration' : 'Admin Login' }} />
@@ -168,6 +172,13 @@ export default function CompanyAuth() {
           className="mt-4 cursor-pointer text-center text-blue-600 underline"
           onPress={() => setIsSignUp(!isSignUp)}>
           {isSignUp ? 'Already registered? Sign In' : 'Need to register a company?'}
+        </Text>
+      </View>
+      <View>
+        <Text
+          className="mt-4 cursor-pointer text-center text-blue-600 underline"
+          onPress={() => setRedirectToEmployeeLogin(true)}>
+          Need to log in as an employee?
         </Text>
       </View>
     </View>

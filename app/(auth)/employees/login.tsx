@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, Redirect } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, View, TextInput, TouchableOpacity, Text, AppState } from 'react-native';
 import { supabase } from '~/utils/supabase';
@@ -15,6 +15,7 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [redirectToAdminLogin, setRedirectToAdminLogin] = useState(false);
 
   async function signInWithEmail() {
     setLoading(true);
@@ -32,6 +33,10 @@ export default function Auth() {
     if (error) Alert.alert(error.message);
     if (!session) Alert.alert('Please check your inbox for email verification!');
     setLoading(false);
+  }
+
+  if (redirectToAdminLogin) {
+    return <Redirect href="/(auth)/company/newLogin" />;
   }
 
   return (
@@ -67,6 +72,11 @@ export default function Auth() {
           <Text className="font-semibold text-white">Sign Up</Text>
         </TouchableOpacity>
       </View>
+      <Text
+        className="mt-4 cursor-pointer text-center text-blue-600 underline"
+        onPress={() => setRedirectToAdminLogin(true)}>
+        Need to log in as an admin?
+      </Text>
     </View>
   );
 }
