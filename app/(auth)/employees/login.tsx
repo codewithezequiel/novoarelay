@@ -26,12 +26,36 @@ export default function Auth() {
 
   async function signUpWithEmail() {
     setLoading(true);
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({ email, password });
-    if (error) Alert.alert(error.message);
-    if (!session) Alert.alert('Please check your inbox for email verification!');
+
+    // 1️⃣ Check if email exists in the invitations table
+    const { data: invitedUser, error: inviteError } = await supabase
+      .from('invitations')
+      .select('email')
+      .eq('email', email)
+      .single();
+
+    if (inviteError || !invitedUser) {
+      Alert.alert('Error', 'You must be invited to sign up.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // 2️⃣ Proceed with signing up
+      const { error: signUpError } = await supabase.auth.signUp({ email, password });
+
+      if (signUpError) {
+        throw signUpError;
+      }
+
+      Alert.alert('Success', 'Check your inbox for email verification!');
+
+      // 3️⃣ Remove used invitation after successful sign-up
+      await supabase.from('invitations').delete().eq('email', email);
+    } catch (error) {
+      Alert.alert('Error', error instanceof Error ? error.message : 'Sign-up failed.');
+    }
+
     setLoading(false);
   }
 
