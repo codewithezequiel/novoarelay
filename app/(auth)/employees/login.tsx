@@ -30,7 +30,7 @@ export default function Auth() {
     // 1️⃣ Check if email exists in the invitations table
     const { data: invitedUser, error: inviteError } = await supabase
       .from('invitations')
-      .select('email')
+      .select('*')
       .eq('email', email)
       .single();
 
@@ -42,10 +42,23 @@ export default function Auth() {
 
     try {
       // 2️⃣ Proceed with signing up
-      const { error: signUpError } = await supabase.auth.signUp({ email, password });
+      const { data: userData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
       if (signUpError) {
         throw signUpError;
+      }
+
+      const user = userData.user;
+      if (user) {
+        const { error: profileUpdateError } = await supabase
+          .from('profiles')
+          .update({ company_id: invitedUser.company_id, role: 'employee' })
+          .eq('id', user.id);
+
+        if (profileUpdateError) throw profileUpdateError;
       }
 
       Alert.alert('Success', 'Check your inbox for email verification!');

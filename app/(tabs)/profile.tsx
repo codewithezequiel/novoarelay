@@ -1,7 +1,8 @@
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
-import InviteDropdown from '~/components/InviteDropdown';
+import AdminDashboard from '~/components/AdminDashboard';
+import EmployeeDashboard from '~/components/EmployeeDashboard';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
@@ -120,16 +121,7 @@ export default function Account() {
           autoCapitalize="none"
         />
 
-        {role === 'admin' ? (
-          <InviteDropdown />
-        ) : (
-          <View className="mx-5 mt-6">
-            <Text className="text-xl font-semibold text-gray-800">Employee Dashboard</Text>
-            <Pressable className="mt-4 rounded-lg bg-green-400 p-3">
-              <Text className="text-center text-lg text-white">View Tasks</Text>
-            </Pressable>
-          </View>
-        )}
+        {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
 
         <Pressable
           disabled={loading}
