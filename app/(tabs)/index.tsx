@@ -1,15 +1,28 @@
 import { Stack } from 'expo-router';
-import { StyleSheet, View, Text, FlatList, ScrollView } from 'react-native';
+import { View, FlatList, ScrollView } from 'react-native';
 
 import TRListItem from '~/components/TRListItem';
-import towingReports from '~/assets/towingReports.json';
+import { supabase } from '~/utils/supabase';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+  async function fetchEvents() {
+    const { data, error } = await supabase.from('events').select('*');
+    setEvents(data);
+    console.log(events);
+    console.log(error);
+  }
+
   return (
     <>
       <Stack.Screen options={{ title: 'Tab One' }} />
       <FlatList
-        data={towingReports}
+        data={events}
         renderItem={({ item }) => (
           <View>
             <TRListItem report={item} />

@@ -34,10 +34,10 @@ export default function TRListItem({ report }) {
           {/* Pickup & Dropoff Locations */}
           <View className="mt-2 flex-row gap-5">
             <Text className="text-sm font-semibold text-gray-600">
-              📍 Pickup: {report.pickupLocation}
+              📍 Pickup: {report.pickup_location}
             </Text>
             <Text className="text-sm font-semibold text-gray-600">
-              🚚 Dropoff: {report.dropoffLocation}
+              🚚 Dropoff: {report.dropoff_location}
             </Text>
           </View>
 
@@ -54,7 +54,7 @@ export default function TRListItem({ report }) {
                   {report.employee_fullName || 'Unknown Employee'}
                 </Text>
                 <Text className="text-sm text-gray-500">
-                  Live Location: {report.currentLocation || 'Location Unknown'}
+                  Live Location: {report.current_location || 'Location Unknown'}
                 </Text>
               </View>
             </View>
