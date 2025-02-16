@@ -1,10 +1,21 @@
 import { useLocalSearchParams, Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, Pressable } from 'react-native';
 import towingReports from '~/assets/towingReports.json';
+import { supabase } from '~/utils/supabase';
 
 export default function TowReportPage() {
   const { id } = useLocalSearchParams();
-  const towingReport = towingReports.find((e) => e.id === id);
+  const [event, setEvent] = useState(null);
+
+  useEffect(() => {
+    fetchEvent();
+  }, []);
+
+  async function fetchEvent() {
+    const { data, error } = await supabase.from('events').select('*').eq('id', id).single();
+    setEvent(data);
+  }
 
   return (
     <View className="mx-auto max-w-screen-sm flex-1 gap-3 bg-white p-5">
@@ -19,53 +30,50 @@ export default function TowReportPage() {
         />
 
         {/* Main Image */}
-        <Image
-          source={{ uri: towingReport?.image_url }}
-          className="mb-5 aspect-video w-full rounded-lg"
-        />
+        <Image source={{ uri: event?.image_url }} className="mb-5 aspect-video w-full rounded-lg" />
 
         {/* Report Title */}
         <Text className="mb-3 text-3xl font-bold text-gray-800">
-          {`${towingReport?.employee_fullName}'s Towing Report`}
+          {`${event?.employee_fullName}'s Towing Report`}
         </Text>
 
         {/* Status Section */}
         <View className="mb-5 flex-row items-center">
           <Text
             className={`text-lg font-semibold ${
-              towingReport?.status === 'in_progress' ? 'text-orange-600' : 'text-green-600'
+              event?.status === 'in_progress' ? 'text-orange-600' : 'text-green-600'
             }`}>
-            {towingReport?.status === 'in_progress' ? '🚧 Towing in Progress' : '✅ Tow Completed'}
+            {event?.status === 'in_progress' ? '🚧 Towing in Progress' : '✅ Tow Completed'}
           </Text>
         </View>
 
         {/* Description */}
         <Text className="mb-3 text-lg text-gray-700" numberOfLines={3}>
-          {towingReport?.description || 'No description available.'}
+          {event?.description || 'No description available.'}
         </Text>
 
         {/* Pickup & Dropoff Locations */}
         <View className="mb-5">
           <Text className="text-lg font-semibold text-gray-800">
-            📍 Pickup: {towingReport?.pickupLocation || 'Location not provided'}
+            📍 Pickup: {event?.pickup_location || 'Location not provided'}
           </Text>
           <Text className="mt-1 text-lg font-semibold text-gray-800">
-            🚚 Dropoff: {towingReport?.dropoffLocation || 'Location not provided'}
+            🚚 Dropoff: {event?.dropoff_location || 'Location not provided'}
           </Text>
         </View>
 
         {/* Employee Info */}
         <View className="mb-5 flex-row items-center">
           <Image
-            source={{ uri: towingReport?.employee_image_url }}
+            source={{ uri: event?.employee_image_url }}
             className="mr-4 h-12 w-12 rounded-full"
           />
           <View>
             <Text className="text-lg font-semibold">
-              {towingReport?.employee_fullName || 'Unknown Employee'}
+              {event?.employee_fullName || 'Unknown Employee'}
             </Text>
             <Text className="text-sm text-gray-500">
-              Live Location: {towingReport?.currentLocation || 'Location Unknown'}
+              Live Location: {event?.current_location || 'Location Unknown'}
             </Text>
           </View>
         </View>
@@ -75,7 +83,7 @@ export default function TowReportPage() {
       <View className="absolute bottom-10 left-0 right-0 border-t-2 border-gray-400 p-4">
         <Pressable onPress={() => console.log('Hello')} className="mt-2 rounded-xl bg-red-400 p-3">
           <Text className="text-center text-lg font-bold text-white">
-            Call {towingReport?.employee_fullName}
+            Call {event?.employee_fullName}
           </Text>
         </Pressable>
       </View>

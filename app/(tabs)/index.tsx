@@ -14,7 +14,6 @@ export default function Home() {
   async function fetchEvents() {
     const { data, error } = await supabase.from('events').select('*');
     setEvents(data);
-    console.log(events);
     console.log(error);
   }
 

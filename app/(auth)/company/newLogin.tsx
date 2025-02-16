@@ -107,6 +107,13 @@ export default function CompanyAuth() {
         .eq('email', email)
         .single();
 
+      if (userData?.role !== 'admin') {
+        await supabase.auth.signOut();
+        Alert.alert('Access Denied', 'You are not authorized to access the admin panel.');
+        setLoading(false);
+        return;
+      }
+
       if (userData?.role === 'admin') {
         <Redirect href={'/'} />; // Redirect to company dashboard
       } else {
