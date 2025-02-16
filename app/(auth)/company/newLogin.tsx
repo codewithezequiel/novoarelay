@@ -19,6 +19,7 @@ export default function CompanyAuth() {
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between sign-in and sign-up
   const [redirectToEmployeeLogin, setRedirectToEmployeeLogin] = useState(false);
+  const [redirectToAdmin, setRedirectToAdmin] = useState(false);
 
   useEffect(() => {
     // Check if the user is already signed in and redirect
@@ -93,37 +94,53 @@ export default function CompanyAuth() {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // Step 1: Sign in the user
+      const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
+      if (signInError) throw signInError;
 
-      // Fetch user role to confirm admin access
-      const { data: userData } = await supabase
+      const user = authData?.user;
+      if (!user) {
+        Alert.alert('Error', 'User not found.');
+        setLoading(false);
+        return;
+      }
+
+      // Step 2: Fetch user role using user ID
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('role')
-        .eq('email', email)
+        .eq('id', user.id) // ✅ Querying by user ID, not email
         .single();
 
-      if (userData?.role !== 'admin') {
+      if (profileError || !profileData) {
+        Alert.alert('Error', 'Failed to fetch user role.');
+        setLoading(false);
+        return;
+      }
+
+      // Step 3: Verify admin access
+      if (profileData.role !== 'admin') {
         await supabase.auth.signOut();
         Alert.alert('Access Denied', 'You are not authorized to access the admin panel.');
         setLoading(false);
         return;
       }
 
-      if (userData?.role === 'admin') {
-        <Redirect href={'/'} />; // Redirect to company dashboard
-      } else {
-        Alert.alert('Access Denied', 'Only company admins can sign in here.');
-      }
+      // Step 4: Redirect to admin dashboard
+      setRedirectToAdmin(true); // Use state to trigger Redirect
     } catch (err) {
       Alert.alert('Error', err.message);
     }
 
     setLoading(false);
+  }
+
+  if (redirectToAdmin) {
+    return <Redirect href="/" />;
   }
 
   if (redirectToEmployeeLogin) {

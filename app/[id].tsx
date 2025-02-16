@@ -20,6 +20,7 @@ export default function TowReportPage() {
     setLoading(false);
   }
 
+  // Note: Skeleton loading activity indicator would be better
   if (loading) {
     return <ActivityIndicator />;
   }
