@@ -1,20 +1,31 @@
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, Pressable } from 'react-native';
+import { View, Text, Image, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import towingReports from '~/assets/towingReports.json';
 import { supabase } from '~/utils/supabase';
 
 export default function TowReportPage() {
   const { id } = useLocalSearchParams();
   const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchEvent();
   }, []);
 
   async function fetchEvent() {
+    setLoading(true);
     const { data, error } = await supabase.from('events').select('*').eq('id', id).single();
     setEvent(data);
+    setLoading(false);
+  }
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (!event) {
+    return <Text>Event not found.</Text>;
   }
 
   return (
