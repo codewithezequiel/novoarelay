@@ -1,7 +1,6 @@
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, Pressable, ActivityIndicator } from 'react-native';
-import towingReports from '~/assets/towingReports.json';
 import { supabase } from '~/utils/supabase';
 
 export default function TowReportPage() {
@@ -36,7 +35,7 @@ export default function TowReportPage() {
         <Stack.Screen
           options={{
             title: 'Tow Report',
-            headerBackTitle: '+',
+            headerBackTitle: 'Back',
             headerTintColor: 'black',
           }}
         />

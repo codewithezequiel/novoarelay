@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 
 export default function TRListItem({ report }) {
   return (
-    <Link href={`/${report.id}`} asChild>
+    <Link href={`/towingreport/${report.id}`} asChild>
       <Pressable className="p-2">
         <View className="mb-2 max-w-screen-sm rounded-xl bg-white p-5 shadow-md">
           {/* Timestamp */}

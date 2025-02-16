@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
-import { View, FlatList, ScrollView } from 'react-native';
-
+import { View, FlatList } from 'react-native';
 import TRListItem from '~/components/TRListItem';
 import { supabase } from '~/utils/supabase';
 import { useEffect, useState } from 'react';
