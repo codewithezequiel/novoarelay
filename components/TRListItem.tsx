@@ -51,7 +51,7 @@ export default function TRListItem({ report }) {
               />
               <View>
                 <Text className="font-semibold">
-                  {report.employee_fullName || 'Unknown Employee'}
+                  {report.employee_full_name || 'Unknown Employee'}
                 </Text>
                 <Text className="text-sm text-gray-500">
                   Live Location: {report.current_location || 'Location Unknown'}

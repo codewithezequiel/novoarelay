@@ -45,7 +45,7 @@ export default function TowReportPage() {
 
         {/* Report Title */}
         <Text className="mb-3 text-3xl font-bold text-gray-800">
-          {`${event?.employee_fullName}'s Towing Report`}
+          {`${event?.employee_full_name}'s Towing Report`}
         </Text>
 
         {/* Status Section */}
@@ -81,7 +81,7 @@ export default function TowReportPage() {
           />
           <View>
             <Text className="text-lg font-semibold">
-              {event?.employee_fullName || 'Unknown Employee'}
+              {event?.employee_full_name || 'Unknown Employee'}
             </Text>
             <Text className="text-sm text-gray-500">
               Live Location: {event?.current_location || 'Location Unknown'}
@@ -94,7 +94,7 @@ export default function TowReportPage() {
       <View className="absolute bottom-10 left-0 right-0 border-t-2 border-gray-400 p-4">
         <Pressable onPress={() => console.log('Hello')} className="mt-2 rounded-xl bg-red-400 p-3">
           <Text className="text-center text-lg font-bold text-white">
-            Call {event?.employee_fullName}
+            Call {event?.employee_full_name}
           </Text>
         </Pressable>
       </View>

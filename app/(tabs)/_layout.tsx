@@ -9,7 +9,7 @@ export default function TabLayout() {
   console.warn(isAuthenticated);
 
   if (!isAuthenticated) {
-    return <Redirect href={'/company/newLogin'} />;
+    return <Redirect href={'/employees/login'} />;
   }
 
   return (
@@ -30,9 +30,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="create"
         options={{
-          title: 'Tab Two',
+          title: 'Upload',
           tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />,
         }}
       />
