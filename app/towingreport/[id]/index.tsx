@@ -1,11 +1,13 @@
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, Pressable, ActivityIndicator } from 'react-native';
+import { Event } from '~/types/db';
 import { supabase } from '~/utils/supabase';
 
 export default function TowReportPage() {
   const { id } = useLocalSearchParams();
-  const [event, setEvent] = useState(null);
+
+  const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
