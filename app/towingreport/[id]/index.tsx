@@ -1,6 +1,8 @@
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
+import SupaAvatarImage from '~/components/SupaAvatarImage';
+import SupaImage from '~/components/SupaImage';
 import { Event } from '~/types/db';
 import { supabase } from '~/utils/supabase';
 
@@ -16,10 +18,19 @@ export default function TowReportPage() {
 
   async function fetchEvent() {
     setLoading(true);
-    const { data, error } = await supabase.from('events').select('*').eq('id', id).single();
+    const { data, error } = await supabase
+      .from('events')
+      .select(`*, profiles:profiles(avatar_url)`)
+      .eq('id', id)
+      .single();
     setEvent(data);
+    console.log(data);
+
     setLoading(false);
   }
+
+  const employeeImage = event?.profiles?.avatar_url;
+  console.log(employeeImage);
 
   // Note: Skeleton loading activity indicator would be better
   if (loading) {
@@ -43,7 +54,7 @@ export default function TowReportPage() {
         />
 
         {/* Main Image */}
-        <Image source={{ uri: event?.image_url }} className="mb-5 aspect-video w-full rounded-lg" />
+        <SupaImage path={event.image_url} className="mb-5 aspect-video w-full rounded-lg" />
 
         {/* Report Title */}
         <Text className="mb-3 text-3xl font-bold text-gray-800">
@@ -77,10 +88,7 @@ export default function TowReportPage() {
 
         {/* Employee Info */}
         <View className="mb-5 flex-row items-center">
-          <Image
-            source={{ uri: event?.employee_image_url }}
-            className="mr-4 h-12 w-12 rounded-full"
-          />
+          <SupaAvatarImage path={employeeImage} className="h-20 w-20 rounded-full" />
           <View>
             <Text className="text-lg font-semibold">
               {event?.employee_full_name || 'Unknown Employee'}

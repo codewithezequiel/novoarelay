@@ -1,6 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
-import { Image, TextInput, View, Text, Pressable, Alert } from 'react-native';
+import { TextInput, View, Text, Pressable, Alert, ScrollView } from 'react-native';
+import Avatar from '~/components/Avatar';
+import EventImage from '~/components/EventImage';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
@@ -11,6 +13,9 @@ export default function CreateReport() {
   const [tripDescription, setTripDescription] = useState('');
   const [dateIn, setDateIn] = useState(new Date().toISOString());
   const [loading, setLoading] = useState(false);
+
+  const [imageUrl, setImageUrl] = useState('');
+
   const { session } = useAuth();
 
   async function uploadEvent() {
@@ -55,6 +60,7 @@ export default function CreateReport() {
           description: tripDescription.trim(),
           date_initiated: new Date(dateIn).toISOString(),
           employee_full_name: employeeFullName,
+          image_url: imageUrl,
         },
       ])
       .select()
@@ -80,50 +86,60 @@ export default function CreateReport() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Upload' }} />
-      <View className="flex-1 gap-5 bg-white px-5 ">
-        <Image />
-        <TextInput
-          onChangeText={setCompanyName}
-          value={companyName}
-          placeholder="Company Name"
-          className="rounded border-2 border-green-200 p-3"
-        />
-        <TextInput
-          onChangeText={setPickupLocation}
-          value={pickupLocation}
-          placeholder="Pick Up Location"
-          className="rounded border-2 border-green-200  p-3"
-        />
-        <TextInput
-          onChangeText={setDropoffLocation}
-          value={dropoffLocation}
-          placeholder="Drop Off Location"
-          className="rounded border-2 border-green-200 p-3"
-        />
-        <TextInput
-          onChangeText={setTripDescription}
-          value={tripDescription}
-          placeholder="Description"
-          numberOfLines={3}
-          multiline
-          className="min-h-48 rounded border-2 border-green-200  p-3"
-        />
-        <TextInput
-          editable={false}
-          value={dateIn}
-          onChangeText={setDateIn}
-          placeholder="Date"
-          className="rounded border-2 border-green-200 p-3"
-        />
-        <TextInput />
-        <Pressable
-          disabled={loading}
-          onPress={() => uploadEvent()}
-          className="mx-5 mt-5 items-center rounded-md bg-red-400 p-3 px-5">
-          <Text className="text-lg font-bold text-white">Publish Report</Text>
-        </Pressable>
-      </View>
+      <ScrollView>
+        <Stack.Screen options={{ title: 'Upload' }} />
+        <View className="flex-1 gap-5 bg-white px-5 ">
+          <View className="items-center">
+            <EventImage
+              size={200}
+              url={imageUrl}
+              onUpload={(url: string) => {
+                setImageUrl(url);
+              }}
+            />
+          </View>
+          <TextInput
+            onChangeText={setCompanyName}
+            value={companyName}
+            placeholder="Company Name"
+            className="rounded border-2 border-green-200 p-3"
+          />
+          <TextInput
+            onChangeText={setPickupLocation}
+            value={pickupLocation}
+            placeholder="Pick Up Location"
+            className="rounded border-2 border-green-200  p-3"
+          />
+          <TextInput
+            onChangeText={setDropoffLocation}
+            value={dropoffLocation}
+            placeholder="Drop Off Location"
+            className="rounded border-2 border-green-200 p-3"
+          />
+          <TextInput
+            onChangeText={setTripDescription}
+            value={tripDescription}
+            placeholder="Description"
+            numberOfLines={3}
+            multiline
+            className="min-h-48 rounded border-2 border-green-200  p-3"
+          />
+          <TextInput
+            editable={false}
+            value={dateIn}
+            onChangeText={setDateIn}
+            placeholder="Date"
+            className="rounded border-2 border-green-200 p-3"
+          />
+          <TextInput />
+          <Pressable
+            disabled={loading}
+            onPress={() => uploadEvent()}
+            className="mx-5 mt-5 items-center rounded-md bg-red-400 p-3 px-5">
+            <Text className="text-lg font-bold text-white">Publish Report</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
     </>
   );
 }

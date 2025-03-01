@@ -1,8 +1,12 @@
 import { Image, Pressable, Text, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
+import SupaImage from './SupaImage';
+import SupaAvatarImage from './SupaAvatarImage';
 
 export default function TRListItem({ report }) {
+  const employeeImage = report.profiles.avatar_url;
+
   return (
     <Link href={`/towingreport/${report.id}`} asChild>
       <Pressable className="p-2">
@@ -28,7 +32,9 @@ export default function TRListItem({ report }) {
             </View>
 
             {/* Right Side: Truck Image */}
-            <Image source={{ uri: report.image_url }} className="aspect-video w-2/5 rounded-xl " />
+            {report.image_url && (
+              <SupaImage path={report.image_url} className="aspect-video w-2/5 rounded-xl " />
+            )}
           </View>
 
           {/* Pickup & Dropoff Locations */}
@@ -45,10 +51,7 @@ export default function TRListItem({ report }) {
           <View className="mt-3 flex-row items-center justify-between">
             {/* Employee Info */}
             <View className="flex-row items-center gap-3">
-              <Image
-                source={{ uri: report.employee_image_url }}
-                className="h-10 w-10 rounded-full"
-              />
+              <SupaAvatarImage path={employeeImage} className="h-10 w-10 rounded-full" />
               <View>
                 <Text className="font-semibold">
                   {report.employee_full_name || 'Unknown Employee'}
