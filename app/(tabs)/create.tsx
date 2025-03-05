@@ -61,6 +61,7 @@ export default function CreateReport() {
           date_initiated: new Date(dateIn).toISOString(),
           employee_full_name: employeeFullName,
           image_url: imageUrl,
+          pickup_location_point: 'POINT(-118.072329 33.867276)',
         },
       ])
       .select()

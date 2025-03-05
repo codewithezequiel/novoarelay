@@ -66,17 +66,14 @@ export type Database = {
           description: string | null
           device_id: string | null
           dropoff_location: string | null
+          dropoff_location_point: unknown | null
           employee_full_name: string | null
-          employee_image_url: string | null
           id: number
           image_url: string | null
           pickup_location: string
+          pickup_location_point: unknown | null
           status: string | null
           user_id: string
-          vehicle_license_plates: string | null
-          vehicle_model: string | null
-          vehicle_number: number | null
-          vin_number: number | null
         }
         Insert: {
           company_id?: string
@@ -88,17 +85,14 @@ export type Database = {
           description?: string | null
           device_id?: string | null
           dropoff_location?: string | null
+          dropoff_location_point?: unknown | null
           employee_full_name?: string | null
-          employee_image_url?: string | null
           id?: number
           image_url?: string | null
           pickup_location: string
+          pickup_location_point?: unknown | null
           status?: string | null
           user_id?: string
-          vehicle_license_plates?: string | null
-          vehicle_model?: string | null
-          vehicle_number?: number | null
-          vin_number?: number | null
         }
         Update: {
           company_id?: string
@@ -110,17 +104,14 @@ export type Database = {
           description?: string | null
           device_id?: string | null
           dropoff_location?: string | null
+          dropoff_location_point?: unknown | null
           employee_full_name?: string | null
-          employee_image_url?: string | null
           id?: number
           image_url?: string | null
           pickup_location?: string
+          pickup_location_point?: unknown | null
           status?: string | null
           user_id?: string
-          vehicle_license_plates?: string | null
-          vehicle_model?: string | null
-          vehicle_number?: number | null
-          vin_number?: number | null
         }
         Relationships: [
           {
@@ -215,12 +206,137 @@ export type Database = {
           },
         ]
       }
+      truck_locations: {
+        Row: {
+          company_id: string | null
+          id: number
+          last_updated: string | null
+          location: unknown | null
+          location_source: string | null
+          profile_id: string | null
+          status: string | null
+          truck_id: string
+        }
+        Insert: {
+          company_id?: string | null
+          id?: number
+          last_updated?: string | null
+          location?: unknown | null
+          location_source?: string | null
+          profile_id?: string | null
+          status?: string | null
+          truck_id?: string
+        }
+        Update: {
+          company_id?: string | null
+          id?: number
+          last_updated?: string | null
+          location?: unknown | null
+          location_source?: string | null
+          profile_id?: string | null
+          status?: string | null
+          truck_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_company"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_profile"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_truck_id"
+            columns: ["truck_id"]
+            isOneToOne: false
+            referencedRelation: "trucks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trucks: {
+        Row: {
+          company_id: string | null
+          created_at: string | null
+          id: string
+          license_plate: string
+          model: string | null
+          name: string
+          status: string | null
+          updated_at: string | null
+          year: number | null
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          license_plate: string
+          model?: string | null
+          name: string
+          status?: string | null
+          updated_at?: string | null
+          year?: number | null
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          license_plate?: string
+          model?: string | null
+          name?: string
+          status?: string | null
+          updated_at?: string | null
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trucks_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      nearby_events: {
+        Args: {
+          lat: number
+          long: number
+        }
+        Returns: {
+          id: number
+          created_at: string
+          user_id: string
+          company_id: string
+          device_id: string
+          status: string
+          pickup_location: string
+          dropoff_location: string
+          current_location: string
+          description: string
+          image_url: string
+          employee_full_name: string
+          date_completed: string
+          company_name: string
+          date_initiated: string
+          lat: number
+          long: number
+          dist_meters: number
+          avatar_url: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
