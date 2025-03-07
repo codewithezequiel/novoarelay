@@ -13,7 +13,9 @@ export default function Home() {
   }, []);
 
   async function fetchEvents() {
-    const { data, error } = await supabase.from('events').select(`*, profiles(avatar_url)`);
+    const { data, error } = await supabase
+      .from('events')
+      .select(`*, profiles(avatar_url, username)`);
     setEvents(data);
     console.log(error);
   }

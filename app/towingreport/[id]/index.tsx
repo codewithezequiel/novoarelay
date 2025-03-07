@@ -20,17 +20,18 @@ export default function TowReportPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from('events')
-      .select(`*, profiles:profiles(avatar_url)`)
+      .select(`*, profiles:profiles(avatar_url, username)`)
       .eq('id', id)
       .single();
     setEvent(data);
-    console.log(data);
+    // console.log(data);
 
     setLoading(false);
   }
 
   const employeeImage = event?.profiles?.avatar_url;
-  console.log(employeeImage);
+  const employeeUsername = event?.profiles?.username;
+  // console.log(employeeImage);
 
   // Note: Skeleton loading activity indicator would be better
   if (loading) {
@@ -58,7 +59,7 @@ export default function TowReportPage() {
 
         {/* Report Title */}
         <Text className="mb-3 text-3xl font-bold text-gray-800">
-          {`${event?.employee_full_name}'s Towing Report`}
+          {`${employeeUsername}'s Towing Report`}
         </Text>
 
         {/* Status Section */}
@@ -90,9 +91,7 @@ export default function TowReportPage() {
         <View className="mb-5 flex-row items-center">
           <SupaAvatarImage path={employeeImage} className="h-20 w-20 rounded-full" />
           <View>
-            <Text className="text-lg font-semibold">
-              {event?.employee_full_name || 'Unknown Employee'}
-            </Text>
+            <Text className="text-lg font-semibold">{employeeUsername || 'Unknown Employee'}</Text>
             <Text className="text-sm text-gray-500">
               Live Location: {event?.current_location || 'Location Unknown'}
             </Text>

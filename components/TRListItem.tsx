@@ -6,6 +6,7 @@ import SupaAvatarImage from './SupaAvatarImage';
 
 export default function TRListItem({ report }) {
   const employeeImage = report.avatar_url;
+  const employeeUsername = report.profiles.username;
 
   return (
     <Link href={`/towingreport/${report.id}`} asChild>
@@ -59,7 +60,7 @@ export default function TRListItem({ report }) {
               <SupaAvatarImage path={employeeImage} className="h-10 w-10 rounded-full border" />
               <View>
                 <Text className="font-semibold text-gray-800">
-                  {report.employee_full_name || 'Unknown Employee'}
+                  {employeeUsername || 'Unknown Employee'}
                 </Text>
                 <Text className="text-sm text-gray-500">
                   {report.current_location ? `📌 ${report.current_location}` : 'Location Unknown'}
