@@ -11,6 +11,7 @@ import {
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 import { Picker } from '@react-native-picker/picker';
+import { router } from 'expo-router';
 
 export default function CreateEvent() {
   const [pickupLocation, setPickupLocation] = useState('');
@@ -137,6 +138,18 @@ export default function CreateEvent() {
         Alert.alert('Error', 'Could not create event.');
         setLoading(false);
         return;
+      } else {
+        console.log('Event created with ID:', event.id);
+        Alert.alert('Success', 'Event created successfully!');
+
+        // Reset fields
+        setPickupLocation('');
+        setDropoffLocation('');
+        setClientName('');
+        setTruckModel('');
+        setStatus('pending');
+
+        router.push(`/towingreport/${event.id}`);
       }
 
       console.log('Event created with ID:', event.id);
