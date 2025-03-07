@@ -1,146 +1,248 @@
-import { router, Stack } from 'expo-router';
-import { useState } from 'react';
-import { TextInput, View, Text, Pressable, Alert, ScrollView } from 'react-native';
-import Avatar from '~/components/Avatar';
-import EventImage from '~/components/EventImage';
+import { useState, useEffect } from 'react';
+import {
+  View,
+  TextInput,
+  Text,
+  Pressable,
+  Alert,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
+import { Picker } from '@react-native-picker/picker';
 
-export default function CreateReport() {
-  const [companyName, setCompanyName] = useState('');
+export default function CreateEvent() {
   const [pickupLocation, setPickupLocation] = useState('');
   const [dropoffLocation, setDropoffLocation] = useState('');
-  const [tripDescription, setTripDescription] = useState('');
-  const [dateIn, setDateIn] = useState(new Date().toISOString());
+  const [clientName, setClientName] = useState('');
+  const [truckModel, setTruckModel] = useState('');
+  const [status, setStatus] = useState('pending');
+  const [trucks, setTrucks] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const [imageUrl, setImageUrl] = useState('');
 
   const { session } = useAuth();
 
-  async function uploadEvent() {
-    if (!session?.user) {
-      console.error('No authenticated user found.');
-      return;
-    }
+  useEffect(() => {
+    const fetchTrucks = async () => {
+      if (!session?.user) return;
 
+      try {
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('company_id')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profileError) {
+          console.error('Error fetching profile:', profileError.message);
+          return;
+        }
+
+        const companyId = profile?.company_id;
+
+        const { data: truckData, error: truckError } = await supabase
+          .from('trucks')
+          .select('id, model')
+          .eq('company_id', companyId);
+
+        if (truckError) {
+          console.error('Error fetching trucks:', truckError.message);
+          return;
+        }
+
+        setTrucks(truckData || []);
+      } catch (err) {
+        console.error('Error fetching trucks:', err);
+      }
+    };
+
+    fetchTrucks();
+  }, [session]);
+
+  const createEvent = async () => {
     setLoading(true);
 
-    const { data: userProfileData, error: userProfileError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', session.user.id)
-      .maybeSingle(); // ✅ Prevent error if no profile is found
-
-    if (userProfileError) {
-      console.error('Error fetching user profile:', userProfileError.message);
-      Alert.alert('Error', 'Could not retrieve user profile.');
+    if (!clientName.trim()) {
+      Alert.alert('Error', 'Please provide a valid client name.');
       setLoading(false);
       return;
     }
 
-    if (!userProfileData) {
-      Alert.alert('Error', 'User profile not found.');
+    try {
+      const userId = session?.user?.id; // Get logged-in user ID
+
+      if (!userId) {
+        Alert.alert('Error', 'User not authenticated.');
+        setLoading(false);
+        return;
+      }
+
+      // Fetch company_id from the profiles table
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('company_id')
+        .eq('id', userId)
+        .single();
+
+      if (profileError) {
+        console.error('Error fetching profile:', profileError.message);
+        Alert.alert('Error', 'Could not fetch user profile.');
+        setLoading(false);
+        return;
+      }
+
+      const companyId = profile?.company_id;
+
+      if (!companyId) {
+        Alert.alert('Error', 'Company ID not found.');
+        setLoading(false);
+        return;
+      }
+
+      // Insert client without checking if it exists
+      const { data: newClient, error: newClientError } = await supabase
+        .from('clients')
+        .insert([{ name: clientName.trim(), company_id: companyId }])
+        .select()
+        .single();
+
+      if (newClientError) {
+        console.error('Error inserting client:', newClientError.message);
+        Alert.alert('Error', 'Could not insert client.');
+        setLoading(false);
+        return;
+      }
+
+      const clientId = newClient.id;
+
+      // Insert event with user ID and company ID
+      const { data: event, error: eventError } = await supabase
+        .from('events')
+        .insert([
+          {
+            user_id: userId, // Assign user ID
+            company_id: companyId, // Assign company ID
+            client_id: clientId,
+            pickup_location: pickupLocation.trim(),
+            dropoff_location: dropoffLocation.trim(),
+            status: status,
+          },
+        ])
+        .select()
+        .single();
+
+      if (eventError) {
+        console.error('Error creating event:', eventError.message);
+        Alert.alert('Error', 'Could not create event.');
+        setLoading(false);
+        return;
+      }
+
+      console.log('Event created with ID:', event.id);
+      Alert.alert('Success', 'Event created successfully!');
+
+      // Insert data into truck_locations table
+      if (truckModel) {
+        const { data: truckData, error: truckError } = await supabase
+          .from('trucks')
+          .select('id')
+          .eq('model', truckModel)
+          .eq('company_id', companyId)
+          .single();
+
+        if (truckError) {
+          console.error('Error fetching truck:', truckError.message);
+          Alert.alert('Error', 'Could not fetch truck data.');
+          setLoading(false);
+          return;
+        }
+
+        const truckId = truckData?.id;
+
+        if (truckId) {
+          const { data: truckLocationData, error: truckLocationError } = await supabase
+            .from('truck_locations')
+            .insert([
+              {
+                truck_id: truckId,
+                profile_id: userId, // Profile ID from the logged-in user
+                location_source: 'phone', // Placeholder for now
+                event_id: event.id, // Associate with the created event
+              },
+            ])
+            .select()
+            .single();
+
+          if (truckLocationError) {
+            console.error('Error inserting truck location:', truckLocationError.message);
+            Alert.alert('Error', 'Could not insert truck location.');
+          } else {
+            console.log('Truck location inserted with ID:', truckLocationData.id);
+          }
+        } else {
+          console.error('No truck found with model:', truckModel);
+        }
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error.message);
+      Alert.alert('Error', 'An unexpected error occurred.');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const userCompanyId = userProfileData.company_id;
-    const employeeFullName = userProfileData.username;
-
-    const { data, error } = await supabase
-      .from('events')
-      .insert([
-        {
-          user_id: session.user.id,
-          company_id: userCompanyId,
-          company_name: companyName.trim(),
-          pickup_location: pickupLocation.trim(),
-          dropoff_location: dropoffLocation.trim(),
-          description: tripDescription.trim(),
-          date_initiated: new Date(dateIn).toISOString(),
-          employee_full_name: employeeFullName,
-          image_url: imageUrl,
-          pickup_location_point: 'POINT(-118.072329 33.867276)',
-        },
-      ])
-      .select()
-      .maybeSingle();
-
-    if (error) {
-      Alert.alert('Upload Failed', error.message);
-      console.error('Error inserting event:', error.message);
-    } else {
-      console.log('Event uploaded successfully:', data);
-      Alert.alert('Upload Successful!', 'Your report has been published.');
-
-      setCompanyName('');
-      setPickupLocation('');
-      setDropoffLocation('');
-      setTripDescription('');
-      setDateIn(new Date().toISOString()); // Reset to current date
-      router.push(`/towingreport/${data.id}`);
-    }
-
-    setLoading(false);
-  }
+  };
 
   return (
-    <>
-      <ScrollView>
-        <Stack.Screen options={{ title: 'Upload' }} />
-        <View className="flex-1 gap-5 bg-white px-5 ">
-          <View className="items-center">
-            <EventImage
-              size={200}
-              url={imageUrl}
-              onUpload={(url: string) => {
-                setImageUrl(url);
-              }}
-            />
-          </View>
-          <TextInput
-            onChangeText={setCompanyName}
-            value={companyName}
-            placeholder="Company Name"
-            className="rounded border-2 border-green-200 p-3"
-          />
-          <TextInput
-            onChangeText={setPickupLocation}
-            value={pickupLocation}
-            placeholder="Pick Up Location"
-            className="rounded border-2 border-green-200  p-3"
-          />
-          <TextInput
-            onChangeText={setDropoffLocation}
-            value={dropoffLocation}
-            placeholder="Drop Off Location"
-            className="rounded border-2 border-green-200 p-3"
-          />
-          <TextInput
-            onChangeText={setTripDescription}
-            value={tripDescription}
-            placeholder="Description"
-            numberOfLines={3}
-            multiline
-            className="min-h-48 rounded border-2 border-green-200  p-3"
-          />
-          <TextInput
-            editable={false}
-            value={dateIn}
-            onChangeText={setDateIn}
-            placeholder="Date"
-            className="rounded border-2 border-green-200 p-3"
-          />
-          <TextInput />
-          <Pressable
-            disabled={loading}
-            onPress={() => uploadEvent()}
-            className="mx-5 mt-5 items-center rounded-md bg-red-400 p-3 px-5">
-            <Text className="text-lg font-bold text-white">Publish Report</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
-    </>
+    <ScrollView className="p-5">
+      <Text className="mb-2 text-lg font-bold">Trip Pickup Location</Text>
+      <TextInput
+        placeholder="Enter pickup location"
+        value={pickupLocation}
+        onChangeText={setPickupLocation}
+        className="mb-4 rounded border border-gray-300 p-3"
+      />
+
+      <Text className="mb-2 text-lg font-bold">Trip Dropoff Location</Text>
+      <TextInput
+        placeholder="Enter dropoff location"
+        value={dropoffLocation}
+        onChangeText={setDropoffLocation}
+        className="mb-4 rounded border border-gray-300 p-3"
+      />
+
+      <Text className="mb-2 text-lg font-bold">Client Name</Text>
+      <TextInput
+        placeholder="Enter client name"
+        value={clientName}
+        onChangeText={setClientName}
+        className="mb-4 rounded border border-gray-300 p-3"
+      />
+
+      <Text className="mb-2 text-lg font-bold">Select Your Truck Model</Text>
+      <Picker selectedValue={truckModel} onValueChange={setTruckModel} className="mb-4">
+        <Picker.Item label="Select a truck model" value="" />
+        {trucks.map((truck) => (
+          <Picker.Item key={truck.id} label={truck.model} value={truck.model} />
+        ))}
+      </Picker>
+
+      <Text className="mb-2 text-lg font-bold">Trip Status</Text>
+      <Picker selectedValue={status} onValueChange={setStatus} className="mb-4">
+        <Picker.Item label="Pending" value="pending" />
+        <Picker.Item label="In Progress" value="in_progress" />
+        <Picker.Item label="Completed" value="completed" />
+      </Picker>
+
+      <Pressable
+        onPress={createEvent}
+        disabled={loading}
+        className={`mt-5 rounded bg-blue-500 p-3 ${loading ? 'opacity-50' : ''}`}>
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text className="text-center text-white">Create Event</Text>
+        )}
+      </Pressable>
+    </ScrollView>
   );
 }

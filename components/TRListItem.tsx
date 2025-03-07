@@ -16,7 +16,7 @@ export default function TRListItem({ report }) {
             {new Date(report.created_at).toLocaleString()}
           </Text>
 
-          {/* Status & Description */}
+          {/* Status & Description
           <View className="mt-3">
             <Text
               className={`text-lg font-bold ${
@@ -27,7 +27,7 @@ export default function TRListItem({ report }) {
             <Text className="mt-1 text-sm text-gray-700" numberOfLines={3}>
               {report.description}
             </Text>
-          </View>
+          </View> */}
 
           {/* Truck Image */}
           {report.image_url && (
@@ -42,12 +42,15 @@ export default function TRListItem({ report }) {
             <Text className="text-sm font-semibold text-gray-600">
               📍 Pickup: {report.pickup_location}
             </Text>
-            <Text className="text-sm text-gray-600">
-              {Math.round(report.dist_meters / 1000)} km from you.
-            </Text>
+            {/* <Text className="text-sm text-gray-600">
+              {Math.round(report.pickup_dist_meters / 1000)} km from you.
+            </Text> */}
             <Text className="text-sm font-semibold text-gray-600">
               🚚 Dropoff: {report.dropoff_location}
             </Text>
+            {/* <Text className="text-sm text-gray-600">
+              {Math.round(report.dropoff_dist_meters / 1000)} km from you.
+            </Text> */}
           </View>
 
           {/* Employee Info & Actions */}

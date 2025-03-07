@@ -6,29 +6,29 @@ import { useEffect, useState } from 'react';
 import { NearbyEvent } from '~/types/db';
 
 export default function Home() {
-  const [events, setEvents] = useState<NearbyEvent[]>([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    fetchNearbyEvents();
+    fetchEvents();
   }, []);
 
-  // async function fetchEvents() {
-  //   const { data, error } = await supabase.from('events').select(`*, profiles(avatar_url)`);
-  //   setEvents(data);
-  //   console.log(error);
-  // }
-
-  async function fetchNearbyEvents() {
-    const { data, error } = await supabase.rpc('nearby_events', {
-      lat: 33.7986,
-      long: -118.2358,
-    });
-    // console.log(JSON.stringify(data, null, 2));
+  async function fetchEvents() {
+    const { data, error } = await supabase.from('events').select(`*, profiles(avatar_url)`);
+    setEvents(data);
     console.log(error);
-    if (data) {
-      setEvents(data);
-    }
   }
+
+  // async function fetchNearbyEvents() {
+  //   const { data, error } = await supabase.rpc('nearby_events', {
+  //     lat: 33.7986,
+  //     long: -118.2358,
+  //   });
+  //   console.log(JSON.stringify(data, null, 2));
+  //   console.log(error);
+  //   if (data) {
+  //     setEvents(data);
+  //   }
+  // }
 
   return (
     <>

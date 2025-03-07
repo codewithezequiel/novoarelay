@@ -34,6 +34,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      clients: {
+        Row: {
+          address: string | null
+          company_id: string | null
+          contact_number: string | null
+          created_at: string | null
+          created_by: string | null
+          email: string | null
+          id: number
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          company_id?: string | null
+          contact_number?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          email?: string | null
+          id?: number
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          company_id?: string | null
+          contact_number?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          email?: string | null
+          id?: number
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clients_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           created_at: string | null
@@ -55,19 +99,51 @@ export type Database = {
         }
         Relationships: []
       }
+      event_images: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          event_id: number | null
+          id: number
+          image_url: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          event_id?: number | null
+          id?: number
+          image_url: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          event_id?: number | null
+          id?: number
+          image_url?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_images_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
+          client_id: number | null
           company_id: string
-          company_name: string | null
           created_at: string
-          current_location: string | null
           date_completed: string | null
           date_initiated: string | null
           description: string | null
-          device_id: string | null
           dropoff_location: string | null
           dropoff_location_point: unknown | null
-          employee_full_name: string | null
           id: number
           image_url: string | null
           pickup_location: string
@@ -76,17 +152,14 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          client_id?: number | null
           company_id?: string
-          company_name?: string | null
           created_at?: string
-          current_location?: string | null
           date_completed?: string | null
           date_initiated?: string | null
           description?: string | null
-          device_id?: string | null
           dropoff_location?: string | null
           dropoff_location_point?: unknown | null
-          employee_full_name?: string | null
           id?: number
           image_url?: string | null
           pickup_location: string
@@ -95,17 +168,14 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          client_id?: number | null
           company_id?: string
-          company_name?: string | null
           created_at?: string
-          current_location?: string | null
           date_completed?: string | null
           date_initiated?: string | null
           description?: string | null
-          device_id?: string | null
           dropoff_location?: string | null
           dropoff_location_point?: unknown | null
-          employee_full_name?: string | null
           id?: number
           image_url?: string | null
           pickup_location?: string
@@ -114,6 +184,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "events_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "events_company_id_fkey"
             columns: ["company_id"]
@@ -169,8 +246,10 @@ export type Database = {
         Row: {
           avatar_url: string | null
           company_id: string | null
+          current_location: unknown | null
           full_name: string | null
           id: string
+          on_duty: boolean | null
           role: string | null
           updated_at: string | null
           username: string | null
@@ -179,8 +258,10 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           company_id?: string | null
+          current_location?: unknown | null
           full_name?: string | null
           id: string
+          on_duty?: boolean | null
           role?: string | null
           updated_at?: string | null
           username?: string | null
@@ -189,8 +270,10 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           company_id?: string | null
+          current_location?: unknown | null
           full_name?: string | null
           id?: string
+          on_duty?: boolean | null
           role?: string | null
           updated_at?: string | null
           username?: string | null
@@ -269,7 +352,6 @@ export type Database = {
           license_plate: string
           model: string | null
           name: string
-          status: string | null
           updated_at: string | null
           year: number | null
         }
@@ -280,7 +362,6 @@ export type Database = {
           license_plate: string
           model?: string | null
           name: string
-          status?: string | null
           updated_at?: string | null
           year?: number | null
         }
@@ -291,7 +372,6 @@ export type Database = {
           license_plate?: string
           model?: string | null
           name?: string
-          status?: string | null
           updated_at?: string | null
           year?: number | null
         }
@@ -310,33 +390,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      nearby_events: {
-        Args: {
-          lat: number
-          long: number
-        }
-        Returns: {
-          id: number
-          created_at: string
-          user_id: string
-          company_id: string
-          device_id: string
-          status: string
-          pickup_location: string
-          dropoff_location: string
-          current_location: string
-          description: string
-          image_url: string
-          employee_full_name: string
-          date_completed: string
-          company_name: string
-          date_initiated: string
-          lat: number
-          long: number
-          dist_meters: number
-          avatar_url: string
-        }[]
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
