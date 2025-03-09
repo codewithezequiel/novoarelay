@@ -63,7 +63,7 @@ export default function TruckForm() {
 
   return (
     <View className="mt-10 p-5">
-      <Text className="mb-5 text-center text-xl font-bold">Add Truck</Text>
+      <Text className="mb-5 text-xl font-bold text-white">Add Your Truck</Text>
 
       {/* Truck Name Input */}
       <Controller
@@ -76,7 +76,8 @@ export default function TruckForm() {
               placeholder="Truck Name"
               value={value}
               onChangeText={onChange}
-              className="mb-2 rounded-md border border-gray-300 p-3"
+              className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+              placeholderTextColor="white"
             />
             {errors.name && <Text className="text-red-500">{errors.name.message}</Text>}
           </>
@@ -94,7 +95,8 @@ export default function TruckForm() {
               placeholder="Truck Model"
               value={value}
               onChangeText={onChange}
-              className="mb-2 rounded-md border border-gray-300 p-3"
+              className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+              placeholderTextColor="white"
             />
             {errors.model && <Text className="text-red-500">{errors.model.message}</Text>}
           </>
@@ -112,7 +114,8 @@ export default function TruckForm() {
               placeholder="Plate Number"
               value={value}
               onChangeText={onChange}
-              className="mb-2 rounded-md border border-gray-300 p-3"
+              className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+              placeholderTextColor="white"
             />
             {errors.plate_number && (
               <Text className="text-red-500">{errors.plate_number.message}</Text>
@@ -132,7 +135,8 @@ export default function TruckForm() {
               placeholder="Year"
               value={value}
               onChangeText={onChange}
-              className="mb-2 rounded-md border border-gray-300 p-3"
+              className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+              placeholderTextColor="white"
             />
             {errors.year && <Text className="text-red-500">{errors.year.message}</Text>}
           </>

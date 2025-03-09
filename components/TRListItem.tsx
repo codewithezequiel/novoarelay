@@ -5,7 +5,7 @@ import SupaImage from './SupaImage';
 import SupaAvatarImage from './SupaAvatarImage';
 
 export default function TRListItem({ report }) {
-  const employeeImage = report.avatar_url;
+  const employeeImage = report.profiles.avatar_url;
   const employeeUsername = report.profiles.username;
 
   return (

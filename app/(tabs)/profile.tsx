@@ -113,10 +113,17 @@ export default function Account() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView className="bg-black">
       <TouchableWithoutFeedback onPress={() => setContainerDropdown(false)}>
-        <View className="flex-1 gap-3  p-5">
-          <Stack.Screen options={{ title: 'Profile' }} />
+        <View className="flex-1 gap-3 p-5">
+          <Stack.Screen
+            options={{
+              title: 'Profile',
+              headerStyle: { backgroundColor: 'black' }, // Makes header black
+              headerTintColor: 'white', // Makes text/icons white
+              contentStyle: { backgroundColor: 'black' },
+            }}
+          />
 
           <View className="items-center">
             <Avatar
@@ -128,30 +135,48 @@ export default function Account() {
               }}
             />
           </View>
+          {role === 'admin' ? (
+            <Text className=" mx-5 text-xl font-semibold text-cyan-700">Admin Dashboard</Text>
+          ) : (
+            <Text className=" mx-5 text-xl font-semibold text-cyan-700">Your Dashboard</Text>
+          )}
 
-          <TextInput
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3"
-            placeholder="Username"
-            value={username}
-            onChangeText={setUsername}
-            autoCapitalize="none"
-          />
+          <View className="mx-5 gap-3">
+            <Text className="text-lg font-medium text-white">User Name</Text>
+            <TextInput
+              className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+              placeholder="Username"
+              value={username}
+              onChangeText={setUsername}
+              autoCapitalize="none"
+              placeholderTextColor="white"
+            />
+          </View>
 
-          <TextInput
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3"
-            placeholder="Website"
-            value={website}
-            onChangeText={setWebsite}
-            autoCapitalize="none"
-          />
+          <View className="mx-5 gap-3">
+            <Text className="text-lg font-bold text-white">Website</Text>
+            <TextInput
+              className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+              placeholder="Website"
+              value={website}
+              onChangeText={setWebsite}
+              autoCapitalize="none"
+              placeholderTextColor="white"
+            />
+          </View>
 
-          <TextInput
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3"
-            placeholder="Email"
-            value={session.user.email}
-            editable={false}
-            autoCapitalize="none"
-          />
+          <View className="mx-5 gap-3">
+            <Text className="text-lg font-bold text-white">Email</Text>
+
+            <TextInput
+              className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+              placeholder="Email"
+              value={session.user.email}
+              editable={false}
+              autoCapitalize="none"
+              placeholderTextColor="white"
+            />
+          </View>
 
           {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
 

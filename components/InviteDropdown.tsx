@@ -45,9 +45,10 @@ export default function InviteDropdown() {
 
   return (
     <View className="mx-5 mt-6">
-      <Text className="text-xl font-semibold text-gray-800">Admin Dashboard</Text>
-
       {/* Invite Employee Button */}
+      <Text className="text-xl font-medium text-white">
+        Have any employees? Send them an invite!{' '}
+      </Text>
       <Pressable
         onPress={() => setDropdownOpen(!isDropdownOpen)}
         className="mt-4 rounded-lg bg-orange-400 p-3">
