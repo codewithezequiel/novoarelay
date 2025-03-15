@@ -137,6 +137,10 @@ export type Database = {
       events: {
         Row: {
           client_id: number | null
+          client_truck_license_plate: string | null
+          client_truck_model: string | null
+          client_truck_number: string | null
+          client_truck_vin: string | null
           company_id: string
           created_at: string
           date_completed: string | null
@@ -153,6 +157,10 @@ export type Database = {
         }
         Insert: {
           client_id?: number | null
+          client_truck_license_plate?: string | null
+          client_truck_model?: string | null
+          client_truck_number?: string | null
+          client_truck_vin?: string | null
           company_id?: string
           created_at?: string
           date_completed?: string | null
@@ -169,6 +177,10 @@ export type Database = {
         }
         Update: {
           client_id?: number | null
+          client_truck_license_plate?: string | null
+          client_truck_model?: string | null
+          client_truck_number?: string | null
+          client_truck_vin?: string | null
           company_id?: string
           created_at?: string
           date_completed?: string | null
@@ -291,43 +303,30 @@ export type Database = {
       }
       truck_locations: {
         Row: {
-          company_id: string | null
+          event_id: number | null
           id: number
           last_updated: string | null
-          location: unknown | null
           location_source: string | null
           profile_id: string | null
-          status: string | null
           truck_id: string
         }
         Insert: {
-          company_id?: string | null
+          event_id?: number | null
           id?: number
           last_updated?: string | null
-          location?: unknown | null
           location_source?: string | null
           profile_id?: string | null
-          status?: string | null
           truck_id?: string
         }
         Update: {
-          company_id?: string | null
+          event_id?: number | null
           id?: number
           last_updated?: string | null
-          location?: unknown | null
           location_source?: string | null
           profile_id?: string | null
-          status?: string | null
           truck_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_company"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "fk_profile"
             columns: ["profile_id"]
@@ -340,6 +339,13 @@ export type Database = {
             columns: ["truck_id"]
             isOneToOne: false
             referencedRelation: "trucks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "truck_locations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
         ]

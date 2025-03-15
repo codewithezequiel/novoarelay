@@ -1,11 +1,11 @@
-import { useLocalSearchParams, Stack, router } from 'expo-router';
+import { useLocalSearchParams, Stack, router, Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Pressable, ActivityIndicator, Button, Alert } from 'react-native';
 import SupaAvatarImage from '~/components/SupaAvatarImage';
 import SupaImage from '~/components/SupaImage';
 import { Event } from '~/types/db';
 import { supabase } from '~/utils/supabase';
-import { session, useAuth } from '~/contexts/AuthProvider';
+import { useAuth } from '~/contexts/AuthProvider';
 
 export default function TowReportPage() {
   const { session } = useAuth();
@@ -171,6 +171,11 @@ export default function TowReportPage() {
         ) : (
           <Text>Employee</Text>
         )}
+        <Link
+          href={`/towingreport/${event.id}/posttripdetails`}
+          className="mt-4 w-full rounded-xl bg-blue-500 p-4 shadow-lg transition-all duration-300 hover:bg-blue-700 active:scale-95">
+          <Text className="lext-lg text-center font-semibold text-white">Update Trip Details</Text>
+        </Link>
       </ScrollView>
 
       {/* Footer */}
