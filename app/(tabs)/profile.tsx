@@ -180,19 +180,27 @@ export default function Account() {
 
           {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
 
+          {/* <Pressable
+            onPress={() => {
+              deleteTowReport();
+            }}
+            className="mt-4 w-full rounded-xl bg-red-600 p-4 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
+            <Text className="text-center text-lg font-semibold text-white">Delete Tow Report</Text>
+          </Pressable> */}
+
           <Pressable
             disabled={loading}
             onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
-            className="mx-5 mt-5 items-center rounded-md bg-indigo-400 p-3 px-5">
-            <Text className="text-lg  font-bold text-white">Update Profile</Text>
+            className="mt-5 w-full rounded-xl bg-indigo-300 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-indigo-700 active:scale-95">
+            <Text className="text-center text-lg font-semibold text-white">Update Profile</Text>
           </Pressable>
 
           <View>
             <Pressable
               disabled={loading}
               onPress={() => supabase.auth.signOut()}
-              className="mx-5 mt-5 items-center rounded-md bg-red-400 p-3 px-5">
-              <Text className="text-lg font-bold text-white">Sign Out</Text>
+              className="mt-5 w-full rounded-xl bg-red-500 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
+              <Text className="text-center text-lg font-semibold text-white">Sign Out</Text>
             </Pressable>
           </View>
         </View>

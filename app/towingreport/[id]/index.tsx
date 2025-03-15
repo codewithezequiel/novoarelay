@@ -1,21 +1,40 @@
-import { useLocalSearchParams, Stack } from 'expo-router';
+import { useLocalSearchParams, Stack, router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, Pressable, ActivityIndicator, Button, Alert } from 'react-native';
 import SupaAvatarImage from '~/components/SupaAvatarImage';
 import SupaImage from '~/components/SupaImage';
 import { Event } from '~/types/db';
 import { supabase } from '~/utils/supabase';
+import { session, useAuth } from '~/contexts/AuthProvider';
 
 export default function TowReportPage() {
+  const { session } = useAuth();
   const { id } = useLocalSearchParams();
+  const [role, setRole] = useState('');
 
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchEvent();
-  }, []);
+    checkUserRole();
+  }, [session]);
 
+  async function checkUserRole() {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user?.id)
+        .single();
+      if (data?.role) {
+        setRole(data.role);
+        console.log(data.role);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async function fetchEvent() {
     setLoading(true);
     const { data, error } = await supabase
@@ -27,6 +46,50 @@ export default function TowReportPage() {
     // console.log(data);
 
     setLoading(false);
+  }
+
+  async function deleteTowReport() {
+    if (!event?.id) {
+      console.log('No event ID found.');
+      return;
+    }
+
+    // Show confirmation alert before deleting
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete this tow report? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const { error } = await supabase.from('events').delete().eq('id', event.id);
+
+              if (error) {
+                console.log('Error deleting event:', error.message);
+                Alert.alert('Error', 'Failed to delete tow report. Please try again.');
+                return;
+              }
+
+              Alert.alert('Success', 'Tow Report deleted successfully');
+              try {
+                router.back();
+              } catch (navError) {
+                console.log('Navigation error:', navError);
+              }
+            } catch (error) {
+              console.log('Unexpected error:', error);
+              Alert.alert('Error', 'Something went wrong. Please try again.');
+            }
+          },
+        },
+      ]
+    );
   }
 
   const employeeImage = event?.profiles?.avatar_url;
@@ -97,6 +160,17 @@ export default function TowReportPage() {
             </Text>
           </View>
         </View>
+        {role === 'admin' ? (
+          <Pressable
+            onPress={() => {
+              deleteTowReport();
+            }}
+            className="mt-4 w-full rounded-xl bg-red-600 p-4 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
+            <Text className="text-center text-lg font-semibold text-white">Delete Tow Report</Text>
+          </Pressable>
+        ) : (
+          <Text>Employee</Text>
+        )}
       </ScrollView>
 
       {/* Footer */}

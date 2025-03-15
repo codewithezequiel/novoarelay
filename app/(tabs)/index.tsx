@@ -36,6 +36,7 @@ export default function Home() {
     <>
       <Stack.Screen options={{ title: 'Tab One' }} />
       <FlatList
+        className="bg-black"
         data={events}
         renderItem={({ item }) => (
           <View>

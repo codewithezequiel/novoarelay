@@ -11,9 +11,9 @@ export default function TRListItem({ report }) {
   return (
     <Link href={`/towingreport/${report.id}`} asChild>
       <Pressable className="p-2">
-        <View className="mb-3 max-w-screen-sm rounded-xl bg-white p-5 shadow-md">
+        <View className="mb-3 max-w-screen-sm rounded-xl bg-zinc-800 p-5 shadow-md">
           {/* Timestamp */}
-          <Text className="text-xs font-semibold text-yellow-800">
+          <Text className="text-sm font-semibold text-pink-600">
             {new Date(report.created_at).toLocaleString()}
           </Text>
 
@@ -40,13 +40,13 @@ export default function TRListItem({ report }) {
 
           {/* Pickup & Dropoff Locations */}
           <View className="mt-4 space-y-2">
-            <Text className="text-sm font-semibold text-gray-600">
+            <Text className="text-sm font-semibold text-white">
               📍 Pickup: {report.pickup_location}
             </Text>
             {/* <Text className="text-sm text-gray-600">
               {Math.round(report.pickup_dist_meters / 1000)} km from you.
             </Text> */}
-            <Text className="text-sm font-semibold text-gray-600">
+            <Text className="text-sm font-semibold text-white">
               🚚 Dropoff: {report.dropoff_location}
             </Text>
             {/* <Text className="text-sm text-gray-600">
@@ -59,7 +59,7 @@ export default function TRListItem({ report }) {
             <View className="flex-row items-center gap-3">
               <SupaAvatarImage path={employeeImage} className="h-10 w-10 rounded-full border" />
               <View>
-                <Text className="font-semibold text-gray-800">
+                <Text className="font-semibold text-white">
                   {employeeUsername || 'Unknown Employee'}
                 </Text>
                 <Text className="text-sm text-gray-500">
@@ -69,8 +69,8 @@ export default function TRListItem({ report }) {
             </View>
 
             <View className="flex-row gap-3">
-              <Ionicons name="share-outline" size={22} color="black" />
-              <Ionicons name="bookmark-outline" size={22} color="black" />
+              <Ionicons name="share-outline" size={22} color="white" />
+              <Ionicons name="bookmark-outline" size={22} color="white" />
             </View>
           </View>
         </View>
