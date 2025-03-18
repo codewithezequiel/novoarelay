@@ -206,7 +206,7 @@ export default function CreateEvent() {
   };
 
   return (
-    <ScrollView className="bg-gray-900 p-5">
+    <ScrollView className="bg-black p-5">
       <View className="mb-6">
         <Text className="mb-4 text-center text-2xl font-extrabold text-white">
           Pre Trip Details
@@ -256,9 +256,8 @@ export default function CreateEvent() {
           selectedValue={truckModel}
           onValueChange={setTruckModel}
           className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white">
-          <Picker.Item label="Select a truck model" value="" />
           {trucks.map((truck) => (
-            <Picker.Item key={truck.id} label={truck.model} value={truck.model} />
+            <Picker.Item color="white" key={truck.id} label={truck.model} value={truck.model} />
           ))}
         </Picker>
       </View>
@@ -270,9 +269,9 @@ export default function CreateEvent() {
           selectedValue={status}
           onValueChange={setStatus}
           className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white">
-          <Picker.Item label="Pending" value="pending" />
-          <Picker.Item label="In Progress" value="in_progress" />
-          <Picker.Item label="Completed" value="completed" />
+          <Picker.Item color="white" label="Pending" value="pending" />
+          <Picker.Item color="white" label="In Progress" value="in_progress" />
+          <Picker.Item color="white" label="Completed" value="completed" />
         </Picker>
       </View>
 

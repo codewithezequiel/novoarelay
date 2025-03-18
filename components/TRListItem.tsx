@@ -9,68 +9,83 @@ export default function TRListItem({ report }) {
   const employeeUsername = report.profiles.username;
 
   return (
-    <Link href={`/towingreport/${report.id}`} asChild>
-      <Pressable className="p-2">
-        <View className="mb-3 max-w-screen-sm rounded-xl bg-zinc-800 p-5 shadow-md">
+    <Link href={`/towingreportdetails/${report.id}`} asChild>
+      <Pressable className="w-full">
+        <View className="mb-4 w-full max-w-screen-sm rounded-2xl bg-zinc-800 p-5 shadow-lg">
           {/* Timestamp */}
-          <Text className="text-sm font-semibold text-pink-600">
-            {new Date(report.created_at).toLocaleString()}
-          </Text>
+          <View className="mb-4 border-b border-gray-700 pb-2">
+            <Text className="text-sm font-medium text-pink-500">
+              {new Date(report.created_at).toLocaleString()}
+            </Text>
+          </View>
 
-          {/* Status & Description
-          <View className="mt-3">
+          {/* Status */}
+          <Text className="font-semibold text-white">Trip status:</Text>
+          <View className="mt-2 flex-row items-center gap-2">
+            <Ionicons
+              name={report.status === 'in_progress' ? 'time-outline' : 'checkmark-circle-outline'}
+              size={20}
+              color={report.status === 'in_progress' ? '#f97316' : '#10b981'}
+            />
             <Text
               className={`text-lg font-bold ${
-                report.status === 'in_progress' ? 'text-orange-600' : 'text-green-600'
+                report.status === 'in_progress' ? 'text-orange-500' : 'text-green-500'
               }`}>
               {report.status === 'in_progress' ? '🚧 Towing in Progress' : '✅ Tow Completed'}
             </Text>
-            <Text className="mt-1 text-sm text-gray-700" numberOfLines={3}>
-              {report.description}
-            </Text>
-          </View> */}
+          </View>
 
           {/* Truck Image */}
           {report.image_url && (
             <SupaImage
               path={report.image_url}
-              className="mt-4 aspect-video w-full rounded-xl border border-gray-300"
+              className="mt-4 aspect-video w-full rounded-lg border border-gray-600 shadow-md"
             />
           )}
 
           {/* Pickup & Dropoff Locations */}
-          <View className="mt-4 space-y-2">
-            <Text className="text-sm font-semibold text-white">
-              📍 Pickup: {report.pickup_location}
-            </Text>
-            {/* <Text className="text-sm text-gray-600">
-              {Math.round(report.pickup_dist_meters / 1000)} km from you.
-            </Text> */}
-            <Text className="text-sm font-semibold text-white">
-              🚚 Dropoff: {report.dropoff_location}
-            </Text>
-            {/* <Text className="text-sm text-gray-600">
-              {Math.round(report.dropoff_dist_meters / 1000)} km from you.
-            </Text> */}
+          <View className="mt-4 space-y-3">
+            <View className="flex-row items-center gap-2">
+              <Ionicons name="location-outline" size={18} color="white" />
+              <Text className="text-sm font-medium text-white">
+                Pickup: {report.pickup_location}
+              </Text>
+            </View>
+
+            <View className="flex-row items-center gap-2">
+              <Ionicons name="navigate-outline" size={18} color="white" />
+              <Text className="text-sm font-medium text-white">
+                Dropoff: {report.dropoff_location}
+              </Text>
+            </View>
           </View>
 
           {/* Employee Info & Actions */}
-          <View className="mt-4 flex-row items-center justify-between">
+          <View className="mt-5 flex-row items-center justify-between">
+            {/* Employee Details */}
             <View className="flex-row items-center gap-3">
-              <SupaAvatarImage path={employeeImage} className="h-10 w-10 rounded-full border" />
+              <SupaAvatarImage
+                path={employeeImage}
+                className="h-12 w-12 rounded-full border border-gray-500"
+              />
               <View>
                 <Text className="font-semibold text-white">
                   {employeeUsername || 'Unknown Employee'}
                 </Text>
-                <Text className="text-sm text-gray-500">
+                <Text className="text-sm text-gray-400">
                   {report.current_location ? `📌 ${report.current_location}` : 'Location Unknown'}
                 </Text>
               </View>
             </View>
 
-            <View className="flex-row gap-3">
-              <Ionicons name="share-outline" size={22} color="white" />
-              <Ionicons name="bookmark-outline" size={22} color="white" />
+            {/* Actions */}
+            <View className="flex-row gap-4">
+              <Pressable>
+                <Ionicons name="share-outline" size={24} color="white" />
+              </Pressable>
+              <Pressable>
+                <Ionicons name="bookmark-outline" size={24} color="white" />
+              </Pressable>
             </View>
           </View>
         </View>
