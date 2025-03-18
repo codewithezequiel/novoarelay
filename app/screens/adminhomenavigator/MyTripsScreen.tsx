@@ -3,18 +3,21 @@ import TRListItem from '~/components/TRListItem';
 import { supabase } from '~/utils/supabase';
 import { useEffect, useState } from 'react';
 import { NearbyEvent } from '~/types/db';
+import { useAuth } from '~/contexts/AuthProvider';
 
 export default function MyTripsScreen() {
   const [events, setEvents] = useState([]);
+  const { session } = useAuth();
 
   useEffect(() => {
-    fetchEvents();
+    fetchMyEvents();
   }, []);
 
-  async function fetchEvents() {
+  async function fetchMyEvents() {
     const { data, error } = await supabase
       .from('events')
-      .select(`*, profiles(avatar_url, username)`);
+      .select(`*, profiles(avatar_url, username)`)
+      .eq('user_id', session.user.id);
     if (data) {
       setEvents(data);
     }

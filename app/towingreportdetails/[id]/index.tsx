@@ -97,28 +97,31 @@ export default function TowReportPage() {
   }
 
   return (
-    <View className="mx-auto max-w-screen-sm flex-1 gap-5 bg-black p-6 py-20 text-white">
-      <ScrollView>
+    <View className="max-w-screen-sm flex-1 bg-black p-6 pb-10 text-white">
+      <ScrollView className=" p-5 pb-20">
         <Stack.Screen
           options={{
             title: 'Tow Report',
             headerBackTitle: 'Back',
-            headerTintColor: 'black',
+            headerStyle: { backgroundColor: 'black' }, // Makes header black
+            headerTintColor: 'white', // Makes text/icons white
           }}
         />
 
         {/* Main Image */}
-        <SupaImage path={event.image_url} className="mb-6 aspect-video w-full rounded-lg" />
+        {/* <SupaImage path={event.image_url} className="mb-6 aspect-video w-full rounded-lg" /> */}
 
         {/* Report Title */}
-        <Text className="mb-4 text-4xl font-bold text-white">
+        <Text className="mb-4 text-center text-4xl font-bold text-white">
           {`${employeeUsername}'s Towing Report`}
         </Text>
+
+        <View className="mb-4 border-b border-gray-700 pb-2" />
 
         {/* Status Section */}
         <View className="mb-6 flex-row items-center">
           <Text
-            className={`text-xl font-semibold ${
+            className={`text-xl font-bold ${
               event?.status === 'in_progress' ? 'text-orange-400' : 'text-green-400'
             }`}>
             {event?.status === 'in_progress' ? '🚧 Towing in Progress' : '✅ Tow Completed'}
@@ -126,12 +129,12 @@ export default function TowReportPage() {
         </View>
 
         {/* Client Details */}
-        <View className="mb-8 rounded-lg bg-gray-700 p-6 shadow-lg">
+        <View className="mb-8 rounded-lg bg-zinc-800 p-6 shadow-lg">
           <Text className="mb-4 text-2xl font-semibold text-white">Client Details</Text>
 
           <View className="space-y-3">
             <View className="flex-row justify-between">
-              <Text className="text-lg font-medium text-gray-300">Truck Model:</Text>
+              <Text className="text-lg font-medium text-gray-300">Truck Model</Text>
               <Text className="text-lg text-white">
                 {event.client_truck_model || 'Not provided'}
               </Text>
@@ -156,12 +159,16 @@ export default function TowReportPage() {
         </View>
 
         {/* Description */}
-        <Text className="mb-4 text-lg text-gray-300" numberOfLines={3}>
-          {event?.description || 'No description available.'}
-        </Text>
+        <View className="mb-8 rounded-lg bg-zinc-800 p-6 shadow-lg">
+          <Text className="mb-4 text-2xl font-semibold text-white">Trip Description</Text>
+          <Text className="mb-4 text-lg text-gray-300" numberOfLines={3}>
+            {event?.description || 'No description available.'}
+          </Text>
+        </View>
 
         {/* Pickup & Dropoff Locations */}
-        <View className="mb-6">
+        <View className="mb-8 rounded-lg bg-zinc-800 p-6 shadow-lg">
+          <Text className="mb-4 text-2xl font-semibold text-white">Trip Locations</Text>
           <Text className="text-lg font-semibold text-gray-300">
             📍 Pickup: {event?.pickup_location || 'Location not provided'}
           </Text>
@@ -171,9 +178,9 @@ export default function TowReportPage() {
         </View>
 
         {/* Employee Info */}
-        <View className="mb-6 flex-row items-center">
+        <View className="my-6 flex-row items-center">
           <SupaAvatarImage path={employeeImage} className="mr-5 h-24 w-24 rounded-full" />
-          <View>
+          <View className="align-middle">
             <Text className="text-2xl font-semibold text-white">
               {employeeUsername || 'Unknown Employee'}
             </Text>
@@ -183,23 +190,21 @@ export default function TowReportPage() {
           </View>
         </View>
 
-        {/* Delete Button (for admins) */}
-        {role === 'admin' ? (
-          <Pressable
-            onPress={() => deleteTowReport()}
-            className="mt-6 w-full rounded-xl bg-red-600 p-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
-            <Text className="text-center text-xl font-semibold text-white">Delete Tow Report</Text>
-          </Pressable>
-        ) : (
-          <Text className="text-xl text-gray-400">Employee</Text>
-        )}
-
         {/* Update Trip Details Link */}
         <Link
           href={`/towingreportdetails/${event.id}/posttripdetails`}
-          className="mt-6 w-full rounded-xl bg-blue-600 p-5 shadow-lg transition-all duration-300 hover:bg-blue-700 active:scale-95">
+          className="mt-6 rounded-xl bg-blue-600 p-5 shadow-lg transition-all duration-300 hover:bg-blue-700 active:scale-95">
           <Text className="text-center text-xl font-semibold text-white">Update Trip Details</Text>
         </Link>
+
+        {/* Delete Button (for admins) */}
+        {role === 'admin' && (
+          <Pressable
+            onPress={() => deleteTowReport()}
+            className="my-6 rounded-xl bg-red-600 p-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
+            <Text className="text-center text-xl font-semibold text-white">Delete Tow Report</Text>
+          </Pressable>
+        )}
       </ScrollView>
     </View>
   );

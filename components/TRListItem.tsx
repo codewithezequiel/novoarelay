@@ -31,7 +31,7 @@ export default function TRListItem({ report }) {
               className={`text-lg font-bold ${
                 report.status === 'in_progress' ? 'text-orange-500' : 'text-green-500'
               }`}>
-              {report.status === 'in_progress' ? '🚧 Towing in Progress' : '✅ Tow Completed'}
+              {report.status === 'in_progress' ? 'Towing in Progress' : 'Tow Completed'}
             </Text>
           </View>
 

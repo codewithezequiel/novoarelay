@@ -55,6 +55,8 @@ export default function TabLayout() {
               <HeaderButton />
             </Link>
           ),
+          headerStyle: { backgroundColor: 'black' }, // Makes header black
+          headerTintColor: 'white', // Makes text/icons white
         }}
         initialParams={{ role }} // Pass role as a parameter to the index screen
       />
@@ -65,6 +67,8 @@ export default function TabLayout() {
         options={{
           title: 'Upload',
           tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />,
+          headerStyle: { backgroundColor: 'black' }, // Makes header black
+          headerTintColor: 'white', // Makes text/icons white
         }}
       />
 
@@ -74,6 +78,9 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          headerStyle: { backgroundColor: 'black' }, // Makes header black
+          headerTintColor: 'white', // Makes text/icons white
+          headerShown: false,
         }}
       />
     </Tabs>

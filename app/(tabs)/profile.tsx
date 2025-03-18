@@ -116,16 +116,7 @@ export default function Account() {
     <ScrollView className="bg-black">
       <TouchableWithoutFeedback onPress={() => setContainerDropdown(false)}>
         <View className="flex-1 gap-3 p-5">
-          <Stack.Screen
-            options={{
-              title: 'Profile',
-              headerStyle: { backgroundColor: 'black' }, // Makes header black
-              headerTintColor: 'white', // Makes text/icons white
-              contentStyle: { backgroundColor: 'black' },
-            }}
-          />
-
-          <View className="items-center">
+          <View className="mt-20 items-center border-2 border-yellow-300">
             <Avatar
               size={200}
               url={avatarUrl}
