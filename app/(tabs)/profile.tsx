@@ -19,7 +19,7 @@ export default function Account() {
   const [username, setUsername] = useState('');
   const { session } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [website, setWebsite] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [role, setRole] = useState<string | null>(null);
   const [containerDropdown, setContainerDropdown] = useState(false);
 
@@ -39,7 +39,7 @@ export default function Account() {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`username, website, avatar_url`)
+        .select(`username, first_name, avatar_url`)
         .eq('id', session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -48,7 +48,7 @@ export default function Account() {
 
       if (data) {
         setUsername(data.username);
-        setWebsite(data.website);
+        setFirstName(data.first_name);
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
@@ -79,11 +79,11 @@ export default function Account() {
 
   async function updateProfile({
     username,
-    website,
+    first_name,
     avatar_url,
   }: {
     username: string;
-    website: string;
+    first_name: string;
     avatar_url: string;
   }) {
     try {
@@ -93,7 +93,7 @@ export default function Account() {
       const updates = {
         id: session?.user.id,
         username,
-        website,
+        first_name,
         avatar_url,
         updated_at: new Date(),
       };
@@ -113,65 +113,70 @@ export default function Account() {
   }
 
   return (
-    <ScrollView className="bg-black">
-      <TouchableWithoutFeedback onPress={() => setContainerDropdown(false)}>
-        <View className="flex-1 gap-3 p-5">
-          <View className="mt-20 items-center border-2 border-yellow-300">
-            <Avatar
-              size={200}
-              url={avatarUrl}
-              onUpload={(url: string) => {
-                setAvatarUrl(url);
-                updateProfile({ username, website, avatar_url: url });
-              }}
-            />
-          </View>
-          {role === 'admin' ? (
-            <Text className=" mx-5 text-xl font-semibold text-cyan-700">Admin Dashboard</Text>
-          ) : (
-            <Text className=" mx-5 text-xl font-semibold text-cyan-700">Your Dashboard</Text>
-          )}
+    <>
+      {/* <Stack.Screen options={{ title: 'Profile', headerTintColor: 'white' }} /> */}
+      <ScrollView className="bg-black">
+        <TouchableWithoutFeedback onPress={() => setContainerDropdown(false)}>
+          <View className="flex-1 gap-3 p-5">
+            <View className="mt-20 items-center  ">
+              <Avatar
+                size={200}
+                url={avatarUrl}
+                onUpload={(url: string) => {
+                  setAvatarUrl(url);
+                  updateProfile({ username, first_name: firstName, avatar_url: url });
+                }}
+              />
+              <View className="w-full items-center  py-5">
+                <Text className="text-5xl font-bold text-white">{firstName}</Text>
+              </View>
+            </View>
+            {role === 'admin' ? (
+              <Text className=" mx-5 text-xl font-semibold text-cyan-700">Admin Dashboard</Text>
+            ) : (
+              <Text className=" mx-5 text-xl font-semibold text-cyan-700">Your Dashboard</Text>
+            )}
 
-          <View className="mx-5 gap-3">
-            <Text className="text-lg font-medium text-white">User Name</Text>
-            <TextInput
-              className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
-              placeholder="Username"
-              value={username}
-              onChangeText={setUsername}
-              autoCapitalize="none"
-              placeholderTextColor="white"
-            />
-          </View>
+            <View className="mx-5 gap-3">
+              <Text className="text-lg font-medium text-white">User Name</Text>
+              <TextInput
+                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+                placeholder="Username"
+                value={username}
+                onChangeText={setUsername}
+                autoCapitalize="none"
+                placeholderTextColor="gray"
+              />
+            </View>
 
-          <View className="mx-5 gap-3">
-            <Text className="text-lg font-bold text-white">Website</Text>
-            <TextInput
-              className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
-              placeholder="Website"
-              value={website}
-              onChangeText={setWebsite}
-              autoCapitalize="none"
-              placeholderTextColor="white"
-            />
-          </View>
+            <View className="mx-5 gap-3">
+              <Text className="text-lg font-bold text-white">First Name</Text>
+              <TextInput
+                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+                placeholder="First Name"
+                value={firstName}
+                onChangeText={setFirstName}
+                autoCapitalize="none"
+                placeholderTextColor="gray"
+              />
+            </View>
 
-          <View className="mx-5 gap-3">
-            <Text className="text-lg font-bold text-white">Email</Text>
+            <View className="mx-5 gap-3">
+              <Text className="text-lg font-bold text-white">Email</Text>
 
-            <TextInput
-              className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
-              placeholder="Email"
-              value={session.user.email}
-              editable={false}
-              autoCapitalize="none"
-              placeholderTextColor="white"
-            />
-          </View>
+              <TextInput
+                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+                placeholder="Email"
+                value={session.user.email}
+                editable={false}
+                autoCapitalize="none"
+                placeholderTextColor="gray"
+              />
+            </View>
 
-          {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
+            {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
 
-          {/* <Pressable
+            {/* <Pressable
             onPress={() => {
               deleteTowReport();
             }}
@@ -179,23 +184,26 @@ export default function Account() {
             <Text className="text-center text-lg font-semibold text-white">Delete Tow Report</Text>
           </Pressable> */}
 
-          <Pressable
-            disabled={loading}
-            onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
-            className="mt-5 w-full rounded-xl bg-indigo-300 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-indigo-700 active:scale-95">
-            <Text className="text-center text-lg font-semibold text-white">Update Profile</Text>
-          </Pressable>
-
-          <View>
             <Pressable
               disabled={loading}
-              onPress={() => supabase.auth.signOut()}
-              className="mt-5 w-full rounded-xl bg-red-500 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
-              <Text className="text-center text-lg font-semibold text-white">Sign Out</Text>
+              onPress={() =>
+                updateProfile({ username, first_name: firstName, avatar_url: avatarUrl })
+              }
+              className="mt-5 w-full rounded-xl bg-indigo-300 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-indigo-700 active:scale-95">
+              <Text className="text-center text-lg font-semibold text-white">Update Profile</Text>
             </Pressable>
+
+            <View>
+              <Pressable
+                disabled={loading}
+                onPress={() => supabase.auth.signOut()}
+                className="mt-5 w-full rounded-xl bg-red-500 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
+                <Text className="text-center text-lg font-semibold text-white">Sign Out</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </>
   );
 }

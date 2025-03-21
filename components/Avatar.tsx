@@ -94,10 +94,10 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
         <Image
           source={{ uri: avatarUrl }}
           accessibilityLabel="Avatar"
-          style={[avatarSize, styles.avatar, styles.image]}
+          style={[avatarSize, styles.avatar, styles.image, { borderRadius: size / 2 }]}
         />
       ) : (
-        <View style={[avatarSize, styles.avatar, styles.noImage]} />
+        <View style={[avatarSize, styles.avatar, styles.noImage, { borderRadius: size / 2 }]} />
       )}
       <View>
         <Button
@@ -112,19 +112,19 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
 
 const styles = StyleSheet.create({
   avatar: {
-    borderRadius: 5,
     overflow: 'hidden',
     maxWidth: '100%',
   },
   image: {
     objectFit: 'cover',
     paddingTop: 0,
+    borderRadius: 9999,
   },
   noImage: {
     backgroundColor: '#333',
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: 'rgb(200, 200, 200)',
-    borderRadius: 5,
+    borderRadius: 9999,
   },
 });

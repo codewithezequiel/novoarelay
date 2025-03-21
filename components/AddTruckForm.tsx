@@ -77,7 +77,7 @@ export default function TruckForm() {
               value={value}
               onChangeText={onChange}
               className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
-              placeholderTextColor="white"
+              placeholderTextColor="gray"
             />
             {errors.name && <Text className="text-red-500">{errors.name.message}</Text>}
           </>
@@ -96,7 +96,7 @@ export default function TruckForm() {
               value={value}
               onChangeText={onChange}
               className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
-              placeholderTextColor="white"
+              placeholderTextColor="gray"
             />
             {errors.model && <Text className="text-red-500">{errors.model.message}</Text>}
           </>
@@ -115,7 +115,7 @@ export default function TruckForm() {
               value={value}
               onChangeText={onChange}
               className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
-              placeholderTextColor="white"
+              placeholderTextColor="gray"
             />
             {errors.plate_number && (
               <Text className="text-red-500">{errors.plate_number.message}</Text>
@@ -136,7 +136,7 @@ export default function TruckForm() {
               value={value}
               onChangeText={onChange}
               className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
-              placeholderTextColor="white"
+              placeholderTextColor="gray"
             />
             {errors.year && <Text className="text-red-500">{errors.year.message}</Text>}
           </>

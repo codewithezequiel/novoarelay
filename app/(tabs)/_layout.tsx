@@ -80,7 +80,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           headerStyle: { backgroundColor: 'black' }, // Makes header black
           headerTintColor: 'white', // Makes text/icons white
-          headerShown: false,
         }}
       />
     </Tabs>
