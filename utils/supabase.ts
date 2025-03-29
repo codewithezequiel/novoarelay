@@ -9,8 +9,8 @@ const isBrowser = typeof window !== 'undefined'; // ✅ Check if it's in the bro
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage: isBrowser ? AsyncStorage : undefined, // ✅ Avoid using AsyncStorage in SSR
-    autoRefreshToken: isBrowser,
-    persistSession: isBrowser,
+    autoRefreshToken: true,
+    persistSession: true,
     detectSessionInUrl: false,
   },
 });

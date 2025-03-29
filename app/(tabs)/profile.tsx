@@ -1,4 +1,3 @@
-import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   Alert,
@@ -20,6 +19,7 @@ export default function Account() {
   const { session } = useAuth();
   const [loading, setLoading] = useState(true);
   const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [role, setRole] = useState<string | null>(null);
   const [containerDropdown, setContainerDropdown] = useState(false);
 
@@ -39,7 +39,7 @@ export default function Account() {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`username, first_name, avatar_url`)
+        .select(`username, first_name, last_name, avatar_url`)
         .eq('id', session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -49,6 +49,7 @@ export default function Account() {
       if (data) {
         setUsername(data.username);
         setFirstName(data.first_name);
+        setLastName(data.last_name);
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
@@ -80,10 +81,12 @@ export default function Account() {
   async function updateProfile({
     username,
     first_name,
+    last_name,
     avatar_url,
   }: {
     username: string;
     first_name: string;
+    last_name: string;
     avatar_url: string;
   }) {
     try {
@@ -94,6 +97,7 @@ export default function Account() {
         id: session?.user.id,
         username,
         first_name,
+        last_name,
         avatar_url,
         updated_at: new Date(),
       };
@@ -112,6 +116,22 @@ export default function Account() {
     }
   }
 
+  const signOut = async () => {
+    try {
+      if (!session) {
+        console.error('No active session found');
+        return;
+      }
+
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw new Error(error.message);
+      }
+    } catch (error) {
+      console.error('Error signing out:', error.message);
+    }
+  };
+
   return (
     <>
       {/* <Stack.Screen options={{ title: 'Profile', headerTintColor: 'white' }} /> */}
@@ -124,7 +144,12 @@ export default function Account() {
                 url={avatarUrl}
                 onUpload={(url: string) => {
                   setAvatarUrl(url);
-                  updateProfile({ username, first_name: firstName, avatar_url: url });
+                  updateProfile({
+                    username,
+                    first_name: firstName,
+                    last_name: lastName,
+                    avatar_url: url,
+                  });
                 }}
               />
               <View className="w-full items-center  py-5">
@@ -160,6 +185,17 @@ export default function Account() {
                 placeholderTextColor="gray"
               />
             </View>
+            <View className="mx-5 gap-3">
+              <Text className="text-lg font-bold text-white">Last Name</Text>
+              <TextInput
+                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+                placeholder="Last Name"
+                value={lastName}
+                onChangeText={setLastName}
+                autoCapitalize="none"
+                placeholderTextColor="gray"
+              />
+            </View>
 
             <View className="mx-5 gap-3">
               <Text className="text-lg font-bold text-white">Email</Text>
@@ -187,7 +223,12 @@ export default function Account() {
             <Pressable
               disabled={loading}
               onPress={() =>
-                updateProfile({ username, first_name: firstName, avatar_url: avatarUrl })
+                updateProfile({
+                  username,
+                  first_name: firstName,
+                  last_name: lastName,
+                  avatar_url: avatarUrl,
+                })
               }
               className="mt-5 w-full rounded-xl bg-indigo-300 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-indigo-700 active:scale-95">
               <Text className="text-center text-lg font-semibold text-white">Update Profile</Text>
@@ -196,8 +237,8 @@ export default function Account() {
             <View>
               <Pressable
                 disabled={loading}
-                onPress={() => supabase.auth.signOut()}
-                className="mt-5 w-full rounded-xl bg-red-500 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
+                onPress={signOut}
+                className="mt-5 w-full rounded-xl bg-red-500 p-4 px-5 hover:bg-red-700">
                 <Text className="text-center text-lg font-semibold text-white">Sign Out</Text>
               </Pressable>
             </View>

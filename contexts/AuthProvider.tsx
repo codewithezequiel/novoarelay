@@ -8,22 +8,55 @@ const AuthContext = createContext({});
 export default function AuthProvider({ children }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
 
-  // executes when we mount the provider
-  // we get the session, and based on the session we are setting it in state
-  // to have access to that data (user info)
+  // Fetch profile details
+  const fetchProfile = async (userId: string) => {
+    if (!userId) return;
 
-  // when user logs out, the method will receive that event and set the session w new details
-  // !!session?.user -> if there is a user !! means its true, if user is undefined !! means false.
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('onboarding_completed')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching profile:', error);
+      setIsOnboardingComplete(false); // Default to false on error
+    } else {
+      setIsOnboardingComplete(data?.onboarding_completed);
+      console.log('Fetched onboarding_completed:', data?.onboarding_completed);
+    }
+  };
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const init = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setSession(session);
       setIsReady(true);
+
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      }
+    };
+
+    init();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      } else {
+        setIsOnboardingComplete(null); // Reset on sign out
+      }
     });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   if (!isReady) {
@@ -32,11 +65,16 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, user: session?.user, isAuthenticated: !!session?.user }}>
+      value={{
+        session,
+        user: session?.user,
+        isAuthenticated: !!session?.user,
+        isOnboardingComplete,
+        setIsOnboardingComplete,
+      }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// To consume the data, we use a hook
 export const useAuth = () => useContext(AuthContext);
