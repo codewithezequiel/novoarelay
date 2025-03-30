@@ -15,7 +15,7 @@ export default function EmployeeHome() {
   async function fetchEvents() {
     const { data, error } = await supabase
       .from('events')
-      .select(`*, profiles(avatar_url, username)`);
+      .select(`*, profiles(avatar_url, first_name, last_name)`);
     setEvents(data);
     console.log(error);
   }

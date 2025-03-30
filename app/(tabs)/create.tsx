@@ -18,7 +18,7 @@ export default function CreateEvent() {
   const [dropoffLocation, setDropoffLocation] = useState('');
   const [clientName, setClientName] = useState('');
   const [truckModel, setTruckModel] = useState('');
-  const [status, setStatus] = useState('pending');
+  const [status, setStatus] = useState('in_progress');
   const [trucks, setTrucks] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -147,7 +147,7 @@ export default function CreateEvent() {
         setDropoffLocation('');
         setClientName('');
         setTruckModel('');
-        setStatus('pending');
+        setStatus('in_progress');
 
         router.push(`/towingreportdetails/${event.id}`);
       }
@@ -286,6 +286,7 @@ export default function CreateEvent() {
             <Text className="text-center font-semibold text-white">Create Event</Text>
           )}
         </Pressable>
+        <View className="my-10"></View>
       </ScrollView>
     </>
   );

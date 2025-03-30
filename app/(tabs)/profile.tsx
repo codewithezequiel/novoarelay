@@ -11,11 +11,11 @@ import {
 import AdminDashboard from '~/components/AdminDashboard';
 import Avatar from '~/components/Avatar';
 import EmployeeDashboard from '~/components/EmployeeDashboard';
+import SupaAvatarImage from '~/components/SupaAvatarImage';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
 export default function Account() {
-  const [username, setUsername] = useState('');
   const { session } = useAuth();
   const [loading, setLoading] = useState(true);
   const [firstName, setFirstName] = useState('');
@@ -47,7 +47,6 @@ export default function Account() {
       }
 
       if (data) {
-        setUsername(data.username);
         setFirstName(data.first_name);
         setLastName(data.last_name);
         setAvatarUrl(data.avatar_url);
@@ -79,12 +78,10 @@ export default function Account() {
   }
 
   async function updateProfile({
-    username,
     first_name,
     last_name,
     avatar_url,
   }: {
-    username: string;
     first_name: string;
     last_name: string;
     avatar_url: string;
@@ -95,7 +92,6 @@ export default function Account() {
 
       const updates = {
         id: session?.user.id,
-        username,
         first_name,
         last_name,
         avatar_url,
@@ -138,22 +134,10 @@ export default function Account() {
       <ScrollView className="bg-black">
         <TouchableWithoutFeedback onPress={() => setContainerDropdown(false)}>
           <View className="flex-1 gap-3 p-5">
-            <View className="mt-20 items-center  ">
-              <Avatar
-                size={200}
-                url={avatarUrl}
-                onUpload={(url: string) => {
-                  setAvatarUrl(url);
-                  updateProfile({
-                    username,
-                    first_name: firstName,
-                    last_name: lastName,
-                    avatar_url: url,
-                  });
-                }}
-              />
+            <View className="mt-20 items-center">
+              <SupaAvatarImage path={avatarUrl} className="mr-5 h-40 w-40 rounded-full" />
               <View className="w-full items-center  py-5">
-                <Text className="text-5xl font-bold text-white">{firstName}</Text>
+                <Text className="text-4xl font-bold text-white">{firstName}</Text>
               </View>
             </View>
             {role === 'admin' ? (
@@ -162,17 +146,7 @@ export default function Account() {
               <Text className=" mx-5 text-xl font-semibold text-cyan-700">Your Dashboard</Text>
             )}
 
-            <View className="mx-5 gap-3">
-              <Text className="text-lg font-medium text-white">User Name</Text>
-              <TextInput
-                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsername}
-                autoCapitalize="none"
-                placeholderTextColor="gray"
-              />
-            </View>
+            <View className="mx-5 gap-3"></View>
 
             <View className="mx-5 gap-3">
               <Text className="text-lg font-bold text-white">First Name</Text>
@@ -212,19 +186,10 @@ export default function Account() {
 
             {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
 
-            {/* <Pressable
-            onPress={() => {
-              deleteTowReport();
-            }}
-            className="mt-4 w-full rounded-xl bg-red-600 p-4 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
-            <Text className="text-center text-lg font-semibold text-white">Delete Tow Report</Text>
-          </Pressable> */}
-
             <Pressable
               disabled={loading}
               onPress={() =>
                 updateProfile({
-                  username,
                   first_name: firstName,
                   last_name: lastName,
                   avatar_url: avatarUrl,

@@ -40,7 +40,7 @@ export default function TowReportPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from('events')
-      .select(`*, profiles:profiles(avatar_url, username)`)
+      .select(`*, profiles:profiles(avatar_url, first_name, last_name)`)
       .eq('id', id)
       .single();
     setEvent(data);
@@ -86,7 +86,8 @@ export default function TowReportPage() {
   }
 
   const employeeImage = event?.profiles?.avatar_url;
-  const employeeUsername = event?.profiles?.username;
+  const employeeFirstName = event?.profiles?.first_name;
+  const employeeLastName = event?.profiles?.last_name;
 
   if (loading) {
     return <ActivityIndicator />;
@@ -113,7 +114,7 @@ export default function TowReportPage() {
 
         {/* Report Title */}
         <Text className="mb-4 text-center text-4xl font-bold text-white">
-          {`${employeeUsername}'s Towing Report`}
+          {`${employeeFirstName}'s Towing Report`}
         </Text>
 
         <View className="mb-4 border-b border-gray-700 pb-2" />
@@ -182,7 +183,9 @@ export default function TowReportPage() {
           <SupaAvatarImage path={employeeImage} className="mr-5 h-24 w-24 rounded-full" />
           <View className="align-middle">
             <Text className="text-2xl font-semibold text-white">
-              {employeeUsername || 'Unknown Employee'}
+              {employeeFirstName && employeeLastName
+                ? `${employeeFirstName} ${employeeLastName}`
+                : 'Unknown Employee'}
             </Text>
             <Text className="text-lg text-gray-400">
               Live Location: {event?.current_location || 'Location Unknown'}

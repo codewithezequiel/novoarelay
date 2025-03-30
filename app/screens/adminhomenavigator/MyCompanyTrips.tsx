@@ -14,7 +14,7 @@ export default function MyCompanyTripsScreen() {
   async function fetchEvents() {
     const { data, error } = await supabase
       .from('events')
-      .select(`*, profiles(avatar_url, username)`);
+      .select(`*, profiles(avatar_url, first_name, last_name)`);
     if (data) {
       setEvents(data);
     }

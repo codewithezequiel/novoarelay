@@ -59,7 +59,6 @@ export default function NameScreen() {
         id: session.user.id,
         first_name,
         last_name,
-        onboarding_completed: true, // ✅ Set onboarding as complete
         updated_at: new Date(),
       };
 
@@ -67,10 +66,10 @@ export default function NameScreen() {
 
       if (error) throw new Error('Update unsuccessful');
 
-      console.log('Profile updated successfully');
+      console.log('Profile details updated successfully');
 
       // 🚀 Navigate away after successful onboarding
-      router.replace('/');
+      router.replace('/(auth)/onboarding/profileScreen');
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
@@ -115,7 +114,7 @@ export default function NameScreen() {
             className="flex items-center rounded-lg bg-green-600 py-3"
             disabled={loading}
             onPress={() => updateProfile({ first_name: firstName, last_name: lastName })}>
-            <Text className="font-semibold text-white">Create Account</Text>
+            <Text className="font-semibold text-white">Next</Text>
           </Pressable>
         </View>
 
