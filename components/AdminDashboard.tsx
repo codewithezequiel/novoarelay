@@ -7,7 +7,7 @@ export default function AdminDashboard() {
     {
       label: 'Your Employees',
       icon: 'people-outline',
-      route: '/profilescreens/admindashboard/employees',
+      route: '/profilescreens/admindashboard/youremployeeslist',
     },
     {
       label: 'Your Trucks',
