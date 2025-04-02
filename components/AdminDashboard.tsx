@@ -17,7 +17,7 @@ export default function AdminDashboard() {
     {
       label: 'Your Clients',
       icon: 'briefcase-outline',
-      route: '/profilescreens/admindashboard/clients',
+      route: '/profilescreens/admindashboard/AdminClients',
     },
     {
       label: 'Add Truck',
