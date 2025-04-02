@@ -12,7 +12,7 @@ export default function AdminDashboard() {
     {
       label: 'Your Trucks',
       icon: 'bus-outline',
-      route: '/profilescreens/admindashboard/employees',
+      route: '/profilescreens/admindashboard/AdminTrucks',
     },
     {
       label: 'Your Clients',
