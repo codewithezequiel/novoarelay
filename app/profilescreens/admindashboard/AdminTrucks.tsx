@@ -55,6 +55,7 @@ export default function AdminTruckList() {
           <ActivityIndicator size="large" color="#c8b6ff" />
         ) : trucks.length > 0 ? (
           <FlatList
+            className="p-5"
             data={trucks}
             keyExtractor={(item) => item.id.toString()} // Ensuring each key is unique
             renderItem={({ item }) => <TruckListItem truck={item} />}

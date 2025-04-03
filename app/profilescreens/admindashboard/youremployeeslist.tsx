@@ -56,6 +56,7 @@ export default function EmployeesList() {
           <ActivityIndicator size="large" color="#c8b6ff" />
         ) : employees.length > 0 ? (
           <FlatList
+            className="p-2"
             data={employees}
             keyExtractor={(item) => item.first_name + item.last_name} // Unique key
             renderItem={({ item }) => (

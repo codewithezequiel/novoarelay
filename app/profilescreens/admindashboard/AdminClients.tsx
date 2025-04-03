@@ -54,6 +54,7 @@ export default function AdminClientList() {
           <ActivityIndicator size="large" color="#c8b6ff" />
         ) : clients.length > 0 ? (
           <FlatList
+            className="p-5"
             data={clients}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <AdminClientListItem client={item} />}

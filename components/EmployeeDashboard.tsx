@@ -7,7 +7,7 @@ export default function EmployeeDashboard() {
     {
       label: 'Your Assigned Truck',
       icon: 'bus-outline',
-      route: '/profilescreens/employeedashboard/AssignedTruck',
+      route: '/profilescreens/admindashboard/AdminTrucks',
     },
     {
       label: 'Your Jobs',
