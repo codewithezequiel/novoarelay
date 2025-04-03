@@ -4,7 +4,7 @@ import { TabBarIcon } from '../../components/TabBarIcon';
 import { useAuth } from '~/contexts/AuthProvider';
 import { useEffect, useState } from 'react';
 import { supabase } from '~/utils/supabase';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 export default function TabLayout() {
   const { isAuthenticated, user } = useAuth();
@@ -52,7 +52,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          headerTitle: () => (
+            <Image
+              source={require('~/assets/novoarelay.jpg')}
+              className="mt-5 h-24 w-24"
+              resizeMode="contain"
+            />
+          ),
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View, TextInput, TouchableOpacity, Text, AppState } from 'react-native';
+import { Alert, View, TextInput, TouchableOpacity, Text, AppState, Image } from 'react-native';
 import { supabase } from '~/utils/supabase';
 import { Redirect, Stack } from 'expo-router';
 
@@ -156,9 +156,13 @@ export default function CompanyAuth() {
           title: isSignUp ? 'Company Registration' : 'Admin Login',
         }}
       />
-      <Text className="mb-6 text-3xl font-bold text-green-600">
-        {isSignUp ? 'Register Company' : 'Company Admin Login'}
-      </Text>
+      <View className="mb-10 items-center">
+        <Image
+          source={require('~/assets/novoarelay.jpg')}
+          className="h-48 w-48 "
+          resizeMode="contain"
+        />
+      </View>
 
       <View className="w-full max-w-sm gap-4 space-y-4">
         {isSignUp && (
