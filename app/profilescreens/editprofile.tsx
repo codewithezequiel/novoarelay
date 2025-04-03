@@ -101,7 +101,12 @@ export default function EditProfileDetails() {
   return (
     <>
       <Stack.Screen
-        options={{ title: 'Profile', headerTintColor: 'black', headerBackTitle: 'Back' }}
+        options={{
+          title: 'Edit Profile',
+          headerTintColor: 'white',
+          headerBackTitle: 'Back',
+          headerStyle: { backgroundColor: 'black' },
+        }}
       />
       <ScrollView className="bg-black">
         <TouchableWithoutFeedback onPress={() => setContainerDropdown(false)}>

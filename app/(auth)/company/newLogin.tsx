@@ -148,25 +148,32 @@ export default function CompanyAuth() {
   }
 
   return (
-    <View className="flex flex-1 items-center justify-center bg-gray-100 px-6">
-      <Stack.Screen options={{ title: isSignUp ? 'Company Registration' : 'Admin Login' }} />
-      <Text className="mb-6 text-3xl font-bold text-gray-800">
+    <View className="flex flex-1 items-center justify-center bg-black px-6">
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white',
+          title: isSignUp ? 'Company Registration' : 'Admin Login',
+        }}
+      />
+      <Text className="mb-6 text-3xl font-bold text-green-600">
         {isSignUp ? 'Register Company' : 'Company Admin Login'}
       </Text>
 
-      <View className="w-full max-w-sm space-y-4">
+      <View className="w-full max-w-sm gap-4 space-y-4">
         {isSignUp && (
           <TextInput
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 shadow-sm"
+            className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
             placeholder="Company Name"
             autoCapitalize="words"
             onChangeText={setCompanyName}
             value={companyName}
+            placeholderTextColor="gray"
           />
         )}
 
         <TextInput
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 shadow-sm"
+          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
           placeholder="Email"
           autoCapitalize="none"
           onChangeText={setEmail}
@@ -174,7 +181,7 @@ export default function CompanyAuth() {
         />
 
         <TextInput
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 shadow-sm"
+          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
           placeholder="Password"
           secureTextEntry
           onChangeText={setPassword}

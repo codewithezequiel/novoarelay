@@ -43,12 +43,16 @@ export default function TabLayout() {
   }
 
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'black' }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: 'white',
+        tabBarStyle: { backgroundColor: 'black', borderColor: 'black' },
+      }}>
       {/* Admin / Employee specific content for the index screen */}
       <Tabs.Screen
         name="index"
         options={{
-          title: role === 'admin' ? 'Admin Dashboard' : 'Employee Dashboard',
+          title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>

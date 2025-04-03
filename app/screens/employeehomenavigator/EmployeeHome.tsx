@@ -34,7 +34,7 @@ export default function EmployeeHome() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Tab One' }} />
+      <Stack.Screen options={{ title: 'Dashboard' }} />
       <FlatList
         className="bg-black"
         data={events}

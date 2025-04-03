@@ -77,24 +77,32 @@ export default function Auth() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-gray-100 px-6">
-      <Stack.Screen options={{ title: 'Employee Login' }} />
+    <View className="flex-1 items-center justify-center bg-black px-6">
+      <Stack.Screen
+        options={{
+          title: 'Employee Login',
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white',
+        }}
+      />
       <View className="w-full max-w-sm gap-4">
         <TextInput
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3"
+          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
           onChangeText={setEmail}
           value={email}
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
+          placeholderTextColor="gray"
         />
         <TextInput
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3"
+          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
           onChangeText={setPassword}
           value={password}
           placeholder="Password"
           secureTextEntry
           autoCapitalize="none"
+          placeholderTextColor="gray"
         />
         <TouchableOpacity
           className="flex w-full items-center rounded-lg bg-blue-600 py-3"
