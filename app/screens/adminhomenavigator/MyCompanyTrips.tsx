@@ -23,7 +23,7 @@ export default function MyCompanyTripsScreen() {
 
   return (
     <FlatList
-      className="bg-black"
+      className="bg-black p-5"
       data={events}
       renderItem={({ item }) => (
         <View>

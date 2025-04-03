@@ -82,7 +82,7 @@ export default function NameScreen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <View className="flex-1 items-center justify-center border-2 border-yellow-300 bg-black p-5">
+      <View className="flex-1 items-center justify-center bg-black p-5">
         <View className="mb-10 w-full border-2 ">
           <Text className="text-center text-lg font-bold text-white">Create Account</Text>
         </View>

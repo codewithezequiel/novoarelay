@@ -209,9 +209,7 @@ export default function CreateEvent() {
     <>
       <ScrollView className="bg-black p-5">
         <View className="mb-6">
-          <Text className="mb-4 text-center text-2xl font-extrabold text-white">
-            Pre Trip Details
-          </Text>
+          <Text className="mb-4 text-2xl font-extrabold text-white">Pre Trip Details</Text>
         </View>
 
         {/* Trip Pickup Location */}

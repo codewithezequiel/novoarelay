@@ -7,7 +7,13 @@ export default function PostTripDetails() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Post Trip Details' }} />
+      <Stack.Screen
+        options={{
+          title: 'Post Trip Details',
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white',
+        }}
+      />
       <View>
         <PostTripForm eventId={id} />
       </View>

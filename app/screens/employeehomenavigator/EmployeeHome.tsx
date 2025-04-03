@@ -37,19 +37,19 @@ export default function EmployeeHome() {
       <Stack.Screen
         options={{
           headerTitle: () => (
-            <View>
+            <View className="mb-2 ">
               <Image
                 source={require('~/assets/novoarelay.jpg')}
-                className="h-24 w-24 p-2"
+                className="h-24 w-24"
                 resizeMode="contain"
               />
             </View>
           ),
-          headerStyle: { height: 120, backgroundColor: 'black' },
+          headerStyle: { height: 140, backgroundColor: 'black' },
         }}
       />
       <FlatList
-        className="bg-black  "
+        className="bg-black p-5"
         data={events}
         renderItem={({ item }) => (
           <View>

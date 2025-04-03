@@ -26,7 +26,7 @@ export default function MyTripsScreen() {
 
   return (
     <FlatList
-      className="bg-black"
+      className="bg-black p-5"
       data={events}
       renderItem={({ item }) => (
         <View>
