@@ -2,6 +2,8 @@ import { View, Text, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 
+import EmployeeHighlights from './EmployeeHighlights';
+
 export default function EmployeeDashboard() {
   const sections = [
     {
@@ -27,7 +29,7 @@ export default function EmployeeDashboard() {
   ];
 
   return (
-    <View className="gap-4">
+    <View className="gap-4 p-4">
       {sections.map((section, index) => (
         <Pressable
           key={index}
@@ -41,6 +43,11 @@ export default function EmployeeDashboard() {
           <Ionicons name="chevron-forward-outline" size={28} color="#a1a1aa" />
         </Pressable>
       ))}
+
+      <View className="mt-5">
+        <Text className="text-xl font-bold text-white">Lifetime highlights</Text>
+      </View>
+      <EmployeeHighlights />
     </View>
   );
 }

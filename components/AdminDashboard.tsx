@@ -1,6 +1,8 @@
 import { View, Text, Pressable, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
+import LifetimeComponent from './HighlightCard';
+import AdminHighlights from './AdminHighlights';
 
 export default function AdminDashboard() {
   const sections = [
@@ -32,7 +34,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <View className="gap-4 ">
+    <View className="gap-4 p-4 ">
       {sections.map((section, index) => (
         <Pressable
           key={index}
@@ -47,47 +49,10 @@ export default function AdminDashboard() {
         </Pressable>
       ))}
 
-      <View className="mt-8 gap-5 rounded-xl bg-black p-4">
-        <Text className="mb-4 text-xl font-bold text-white">Lifetime Highlights</Text>
-
-        <View className="mb-4 flex-row justify-around gap-5">
-          <View className="items-center">
-            <Image
-              source={require('~/assets/novoarelayroad.jpg')}
-              className="h-32 w-48 rounded-lg"
-              resizeMode="cover"
-            />
-            <Text className="mt-2 text-lg font-semibold text-white">Total Trips</Text>
-          </View>
-          <View className="items-center">
-            <Image
-              source={require('~/assets/novoarelaytasks.jpg')}
-              className="h-32 w-48 rounded-lg"
-              resizeMode="cover"
-            />
-            <Text className="mt-2 text-lg font-semibold text-white">Assigned Trips</Text>
-          </View>
-        </View>
-
-        <View className="flex-row justify-around gap-5">
-          <View className="items-center">
-            <Image
-              source={require('~/assets/novoarelaymaintenance.jpg')}
-              className="h-32 w-48 rounded-lg"
-              resizeMode="cover"
-            />
-            <Text className="mt-2 text-lg font-semibold text-white">Maintenance Requests</Text>
-          </View>
-          <View className="items-center">
-            <Image
-              source={require('~/assets/novoarelaycity.jpg')}
-              className="h-32 w-48 rounded-lg"
-              resizeMode="cover"
-            />
-            <Text className="mt-2 text-lg font-semibold text-white">Client Cities</Text>
-          </View>
-        </View>
+      <View className="mt-5">
+        <Text className="text-xl font-bold text-white">Lifetime highlights</Text>
       </View>
+      <AdminHighlights />
     </View>
   );
 }
