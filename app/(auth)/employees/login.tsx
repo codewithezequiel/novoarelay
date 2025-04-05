@@ -1,6 +1,15 @@
 import { Stack, Redirect } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, View, TextInput, TouchableOpacity, Text, AppState, Image } from 'react-native';
+import {
+  Alert,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  AppState,
+  Image,
+  ScrollView,
+} from 'react-native';
 import { supabase } from '~/utils/supabase';
 
 AppState.addEventListener('change', (state) => {
@@ -77,58 +86,60 @@ export default function Auth() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-black px-6">
-      <Stack.Screen
-        options={{
-          title: 'Employee Login',
-          headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white',
-        }}
-      />
-      <View className="mb-10 items-center">
-        <Image
-          source={require('~/assets/novoarelay.jpg')}
-          className="h-48 w-48 "
-          resizeMode="contain"
+    <ScrollView className="flex-1 bg-black p-10">
+      <View className="items-center justify-center p-10">
+        <Stack.Screen
+          options={{
+            title: 'User Login',
+            headerStyle: { backgroundColor: 'black' },
+            headerTintColor: 'white',
+          }}
         />
+        <View className="mb-10 items-center">
+          <Image
+            source={require('~/assets/novoarelay.jpg')}
+            className="h-48 w-48 "
+            resizeMode="contain"
+          />
+        </View>
+        <View className="w-full max-w-sm gap-4 ">
+          <TextInput
+            className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+            onChangeText={setEmail}
+            value={email}
+            placeholder="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor="gray"
+          />
+          <TextInput
+            className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+            onChangeText={setPassword}
+            value={password}
+            placeholder="Password"
+            secureTextEntry
+            autoCapitalize="none"
+            placeholderTextColor="gray"
+          />
+          <TouchableOpacity
+            className="flex w-full items-center rounded-lg bg-blue-600 py-3"
+            disabled={loading}
+            onPress={signInWithEmail}>
+            <Text className="font-semibold text-white">Sign In</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="flex w-full items-center rounded-lg bg-green-600 py-3"
+            disabled={loading}
+            onPress={signUpWithEmail}>
+            <Text className="font-semibold text-white">Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+        <Text
+          className="mt-4 cursor-pointer text-center text-blue-600 underline"
+          onPress={() => setRedirectToAdminLogin(true)}>
+          Need to log in as an admin?
+        </Text>
       </View>
-      <View className="w-full max-w-sm gap-4 ">
-        <TextInput
-          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-          onChangeText={setEmail}
-          value={email}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          placeholderTextColor="gray"
-        />
-        <TextInput
-          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-          onChangeText={setPassword}
-          value={password}
-          placeholder="Password"
-          secureTextEntry
-          autoCapitalize="none"
-          placeholderTextColor="gray"
-        />
-        <TouchableOpacity
-          className="flex w-full items-center rounded-lg bg-blue-600 py-3"
-          disabled={loading}
-          onPress={signInWithEmail}>
-          <Text className="font-semibold text-white">Sign In</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="flex w-full items-center rounded-lg bg-green-600 py-3"
-          disabled={loading}
-          onPress={signUpWithEmail}>
-          <Text className="font-semibold text-white">Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-      <Text
-        className="mt-4 cursor-pointer text-center text-blue-600 underline"
-        onPress={() => setRedirectToAdminLogin(true)}>
-        Need to log in as an admin?
-      </Text>
-    </View>
+    </ScrollView>
   );
 }

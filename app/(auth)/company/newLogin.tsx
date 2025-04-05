@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View, TextInput, TouchableOpacity, Text, AppState, Image } from 'react-native';
+import {
+  Alert,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  AppState,
+  Image,
+  ScrollView,
+} from 'react-native';
 import { supabase } from '~/utils/supabase';
 import { Redirect, Stack } from 'expo-router';
 
@@ -148,74 +157,76 @@ export default function CompanyAuth() {
   }
 
   return (
-    <View className="flex flex-1 items-center justify-center bg-black px-6">
-      <Stack.Screen
-        options={{
-          headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white',
-          title: isSignUp ? 'Company Registration' : 'Admin Login',
-        }}
-      />
-      <View className="mb-10 items-center">
-        <Image
-          source={require('~/assets/novoarelay.jpg')}
-          className="h-48 w-48 "
-          resizeMode="contain"
+    <ScrollView className="flex-1 bg-black p-10">
+      <View className="items-center justify-center p-10">
+        <Stack.Screen
+          options={{
+            headerStyle: { backgroundColor: 'black' },
+            headerTintColor: 'white',
+            title: isSignUp ? 'Company Registration' : 'Admin Login',
+          }}
         />
-      </View>
+        <View className="mb-10 items-center">
+          <Image
+            source={require('~/assets/novoarelay.jpg')}
+            className="h-48 w-48 "
+            resizeMode="contain"
+          />
+        </View>
 
-      <View className="w-full max-w-sm gap-4 space-y-4">
-        {isSignUp && (
+        <View className="w-full max-w-sm gap-4 space-y-4">
+          {isSignUp && (
+            <TextInput
+              className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+              placeholder="Company Name"
+              autoCapitalize="words"
+              onChangeText={setCompanyName}
+              value={companyName}
+              placeholderTextColor="gray"
+            />
+          )}
+
           <TextInput
             className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-            placeholder="Company Name"
-            autoCapitalize="words"
-            onChangeText={setCompanyName}
-            value={companyName}
-            placeholderTextColor="gray"
+            placeholder="Email"
+            autoCapitalize="none"
+            onChangeText={setEmail}
+            value={email}
           />
-        )}
 
-        <TextInput
-          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-          placeholder="Email"
-          autoCapitalize="none"
-          onChangeText={setEmail}
-          value={email}
-        />
+          <TextInput
+            className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+            placeholder="Password"
+            secureTextEntry
+            onChangeText={setPassword}
+            value={password}
+          />
 
-        <TextInput
-          className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-          placeholder="Password"
-          secureTextEntry
-          onChangeText={setPassword}
-          value={password}
-        />
+          <TouchableOpacity
+            className={`flex w-full items-center justify-center rounded-lg py-3 ${
+              isSignUp ? 'bg-green-600' : 'bg-blue-600'
+            } ${loading ? 'opacity-50' : 'hover:bg-opacity-80'}`}
+            disabled={loading}
+            onPress={isSignUp ? registerCompany : signInWithEmail}>
+            <Text className="text-lg font-semibold text-white">
+              {isSignUp ? 'Register Company' : 'Sign In'}
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          className={`flex w-full items-center justify-center rounded-lg py-3 ${
-            isSignUp ? 'bg-green-600' : 'bg-blue-600'
-          } ${loading ? 'opacity-50' : 'hover:bg-opacity-80'}`}
-          disabled={loading}
-          onPress={isSignUp ? registerCompany : signInWithEmail}>
-          <Text className="text-lg font-semibold text-white">
-            {isSignUp ? 'Register Company' : 'Sign In'}
+          <Text
+            className="mt-4 cursor-pointer text-center text-blue-600 underline"
+            onPress={() => setIsSignUp(!isSignUp)}>
+            {isSignUp ? 'Already registered? Sign In' : 'Need to register a company?'}
           </Text>
-        </TouchableOpacity>
-
-        <Text
-          className="mt-4 cursor-pointer text-center text-blue-600 underline"
-          onPress={() => setIsSignUp(!isSignUp)}>
-          {isSignUp ? 'Already registered? Sign In' : 'Need to register a company?'}
-        </Text>
+        </View>
+        <View>
+          <Text
+            className="mt-4 cursor-pointer text-center text-blue-600 underline"
+            onPress={() => setRedirectToEmployeeLogin(true)}>
+            Need to log in as an employee?
+          </Text>
+        </View>
       </View>
-      <View>
-        <Text
-          className="mt-4 cursor-pointer text-center text-blue-600 underline"
-          onPress={() => setRedirectToEmployeeLogin(true)}>
-          Need to log in as an employee?
-        </Text>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
