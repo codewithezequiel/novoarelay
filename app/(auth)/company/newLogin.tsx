@@ -192,6 +192,7 @@ export default function CompanyAuth() {
             autoCapitalize="none"
             onChangeText={setEmail}
             value={email}
+            placeholderTextColor="gray"
           />
 
           <TextInput
@@ -200,6 +201,7 @@ export default function CompanyAuth() {
             secureTextEntry
             onChangeText={setPassword}
             value={password}
+            placeholderTextColor="gray"
           />
 
           <TouchableOpacity

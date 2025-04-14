@@ -12,6 +12,8 @@ import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 import { Picker } from '@react-native-picker/picker';
 import { router } from 'expo-router';
+import PickupAddressAutocomplete from '~/components/PickupAddressAutocomplete';
+import DropoffAddressAutocomplete from '~/components/DropoffAddressAutocomplete';
 
 export default function CreateEvent() {
   const [pickupLocation, setPickupLocation] = useState('');
@@ -63,6 +65,12 @@ export default function CreateEvent() {
 
   const createEvent = async () => {
     setLoading(true);
+
+    const pickupLong = pickupLocation.features[0].geometry.coordinates[0];
+    const pickupLat = pickupLocation.features[0].geometry.coordinates[1];
+
+    const dropoffLong = dropoffLocation.features[0].geometry.coordinates[0];
+    const dropoffLat = dropoffLocation.features[0].geometry.coordinates[1];
 
     if (!clientName.trim()) {
       Alert.alert('Error', 'Please provide a valid client name.');
@@ -125,8 +133,10 @@ export default function CreateEvent() {
             user_id: userId, // Assign user ID
             company_id: companyId, // Assign company ID
             client_id: clientId,
-            pickup_location: pickupLocation.trim(),
-            dropoff_location: dropoffLocation.trim(),
+            pickup_location: pickupLocation.features[0].properties.name,
+            pickup_location_point: `POINT(${pickupLong} ${pickupLat})`,
+            dropoff_location: dropoffLocation.features[0].properties.name,
+            dropoff_location_point: `POINT(${dropoffLong} ${dropoffLat})`,
             status: status,
           },
         ])
@@ -215,24 +225,29 @@ export default function CreateEvent() {
         {/* Trip Pickup Location */}
         <View className="mb-6">
           <Text className="text-lg font-semibold text-white">Trip Pickup Location</Text>
-          <TextInput
-            placeholder="Enter pickup location"
-            placeholderTextColor="#A1A1AA"
-            value={pickupLocation}
-            onChangeText={setPickupLocation}
-            className="mt-2 rounded-lg border border-gray-700 bg-zinc-800 p-4 text-white"
+          <PickupAddressAutocomplete
+            onSelected={(pickupLocation) => {
+              console.log(pickupLocation);
+              setPickupLocation(pickupLocation);
+            }}
           />
         </View>
 
         {/* Trip Dropoff Location */}
         <View className="mb-6">
           <Text className="text-lg font-semibold text-white">Trip Dropoff Location</Text>
-          <TextInput
+          {/* <TextInput
             placeholder="Enter dropoff location"
             placeholderTextColor="#A1A1AA"
             value={dropoffLocation}
             onChangeText={setDropoffLocation}
             className="mt-2 rounded-lg border border-gray-700 bg-zinc-800 p-4 text-white"
+          /> */}
+          <DropoffAddressAutocomplete
+            onSelected={(dropoffLocation) => {
+              console.log(dropoffLocation);
+              setDropoffLocation(dropoffLocation);
+            }}
           />
         </View>
 
