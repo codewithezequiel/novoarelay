@@ -19,7 +19,7 @@ export default function EmployeeDashboard() {
     {
       label: 'Maintenance Requests',
       icon: 'construct-outline',
-      route: '/profilescreens/employeedashboard/MaintenanceRequests',
+      route: '/profilescreens/employeedashboard/MaintenanceRequest',
     },
     {
       label: 'Report an Issue',

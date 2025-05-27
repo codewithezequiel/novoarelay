@@ -6,6 +6,7 @@ import SupaImage from '~/components/SupaImage';
 import { Event } from '~/types/db';
 import { supabase } from '~/utils/supabase';
 import { useAuth } from '~/contexts/AuthProvider';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TowReportPage() {
   const { session } = useAuth();
@@ -129,9 +130,23 @@ export default function TowReportPage() {
           </Text>
         </View>
 
+        {/* Trip Date */}
+        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+          <View className="flex-row gap-5">
+            <Ionicons name="time-outline" size={28} color="#6366f1" />
+            <Text className="mb-4 text-xl font-semibold text-white">Report</Text>
+          </View>
+          <Text className="mb-4 text-lg text-gray-300">
+            {event?.created_at || 'No description available.'}
+          </Text>
+        </View>
+
         {/* Client Details */}
-        <View className="mb-8 rounded-lg bg-zinc-800 p-6 shadow-lg">
-          <Text className="mb-4 text-2xl font-semibold text-white">Client Details</Text>
+        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+          <View className="flex-row gap-5">
+            <Ionicons name="newspaper-outline" size={28} color="#6366f1" />
+            <Text className="mb-4 text-xl font-semibold text-white">Client Details</Text>
+          </View>
 
           <View className="space-y-3">
             <View className="flex-row justify-between">
@@ -160,16 +175,22 @@ export default function TowReportPage() {
         </View>
 
         {/* Description */}
-        <View className="mb-8 rounded-lg bg-zinc-800 p-6 shadow-lg">
-          <Text className="mb-4 text-2xl font-semibold text-white">Trip Description</Text>
+        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+          <View className="flex-row gap-5">
+            <Ionicons name="pencil-outline" size={28} color="#6366f1" />
+            <Text className="mb-4 text-xl font-semibold text-white">Description</Text>
+          </View>
           <Text className="mb-4 text-lg text-gray-300" numberOfLines={3}>
             {event?.description || 'No description available.'}
           </Text>
         </View>
 
         {/* Pickup & Dropoff Locations */}
-        <View className="mb-8 rounded-lg bg-zinc-800 p-6 shadow-lg">
-          <Text className="mb-4 text-2xl font-semibold text-white">Trip Locations</Text>
+        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+          <View className="flex-row gap-5">
+            <Ionicons name="location-outline" size={28} color="#6366f1" />
+            <Text className="mb-4 text-xl font-semibold text-white">Locations</Text>
+          </View>
           <Text className="text-lg font-semibold text-gray-300">
             📍 Pickup: {event?.pickup_location || 'Location not provided'}
           </Text>

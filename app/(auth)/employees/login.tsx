@@ -95,13 +95,13 @@ export default function Auth() {
             headerTintColor: 'white',
           }}
         />
-        <View className="mb-10 items-center">
+        {/* <View className="mb-10 items-center">
           <Image
             source={require('~/assets/novoarelay.jpg')}
             className="h-48 w-48 "
             resizeMode="contain"
           />
-        </View>
+        </View> */}
         <View className="w-full max-w-sm gap-4 ">
           <TextInput
             className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"

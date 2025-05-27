@@ -31,6 +31,11 @@ export default function AdminDashboard() {
       icon: 'person-add-outline',
       route: '/profilescreens/admindashboard/InviteEmployeesForm',
     },
+    {
+      label: 'Maintenance Logs',
+      icon: 'person-add-outline',
+      route: '/profilescreens/admindashboard/MaintenanceLogs',
+    },
   ];
 
   return (
