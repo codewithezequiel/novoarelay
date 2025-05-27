@@ -22,8 +22,8 @@ export default function HomeTabs() {
             tabBarActiveTintColor: 'white',
             tabBarInactiveTintColor: 'gray',
           }}>
-          <Tab.Screen name="My Trips" component={MyTripsScreen} />
-          <Tab.Screen name="Company Trips" component={MyCompanyTripsScreen} />
+          <Tab.Screen name="MyTrips" component={MyTripsScreen} />
+          <Tab.Screen name="CompanyTrips" component={MyCompanyTripsScreen} />
         </Tab.Navigator>
       </View>
     );
