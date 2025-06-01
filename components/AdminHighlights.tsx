@@ -1,5 +1,5 @@
 import HighlightCard from './HighlightCard';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useCompanyTrips } from '~/hooks/useCompanyTrips';
 import { useMyTrips } from '~/hooks/useMyTrips';
 import { useAdminClientCount } from '~/hooks/useAdminClientCount';
@@ -16,48 +16,44 @@ export default function AdminHighlights() {
   const { createdAt } = useJoinDate();
 
   return (
-    <View className="flex-row flex-wrap justify-around gap-4 bg-black ">
-      <HighlightCard
-        title="My Trips"
-        icon={require('~/assets/novoarelayroad.jpg')}
-        value={myTripCount}
-      />
-
-      <HighlightCard
-        title="Journey with NovoaRelay"
-        icon={require('~/assets/novoarelaytasks.jpg')}
-        value={createdAt}
-      />
-
-      <HighlightCard
-        title="Total Employees"
-        icon={require('~/assets/novoarelaymaintenance.jpg')}
-        value={employeeCount}
-      />
-
-      <HighlightCard
-        title="Total Company Trips"
-        icon={require('~/assets/novoarelaytasks.jpg')}
-        value={loading ? '...' : tripCount.toString()}
-      />
-
-      <HighlightCard
-        title="Fleet Size"
-        icon={require('~/assets/novoarelaymaintenance.jpg')}
-        value={truckCount}
-      />
-
-      <HighlightCard
-        title="Maintenance Logs"
-        icon={require('~/assets/novoarelaymaintenance.jpg')}
-        value="0"
-      />
-
-      <HighlightCard
-        title="Client Accounts"
-        icon={require('~/assets/novoarelaycity.jpg')}
-        value={clientCount}
-      />
-    </View>
+    <ScrollView className="bg-black">
+      <View className="flex-row flex-wrap justify-between">
+        <HighlightCard
+          title="My Trips"
+          icon={require('~/assets/novoarelaycity.jpg')}
+          value={myTripCount}
+        />
+        <HighlightCard
+          title="Journey with NovoaRelay"
+          icon={require('~/assets/novoarelaytasks.jpg')}
+          value={createdAt}
+        />
+        <HighlightCard
+          title="Total Employees"
+          icon={require('~/assets/novoarelaymaintenance.jpg')}
+          value={employeeCount}
+        />
+        <HighlightCard
+          title="Total Company Trips"
+          icon={require('~/assets/novoarelaytasks.jpg')}
+          value={loading ? '...' : tripCount.toString()}
+        />
+        <HighlightCard
+          title="Fleet Size"
+          icon={require('~/assets/novoarelaymaintenance.jpg')}
+          value={truckCount}
+        />
+        <HighlightCard
+          title="Maintenance Logs"
+          icon={require('~/assets/novoarelaymaintenance.jpg')}
+          value="0"
+        />
+        <HighlightCard
+          title="Client Accounts"
+          icon={require('~/assets/novoarelaycity.jpg')}
+          value={clientCount}
+        />
+      </View>
+    </ScrollView>
   );
 }
