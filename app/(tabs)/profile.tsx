@@ -8,6 +8,7 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import AdminDashboard from '~/components/AdminDashboard';
 import EmployeeDashboard from '~/components/EmployeeDashboard';
@@ -35,54 +36,53 @@ export default function Account() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1">
-      <ScrollView className="bg-black">
-        <TouchableWithoutFeedback>
-          <View className="flex-1 gap-3 p-5">
-            <View className="h-20 bg-black" />
+    <SafeAreaView className="flex-1 bg-black p-6">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1">
+        <ScrollView className="flex-1 bg-black">
+          <TouchableWithoutFeedback>
+            <View className="flex-1 items-center gap-3 bg-black p-8">
+              {/* Profile Section */}
+              <View className="w-full max-w-lg flex-row items-center justify-between rounded-lg border-2 border-zinc-900 p-5 shadow-md">
+                <View className="mr-5 flex-shrink flex-row items-center">
+                  <SupaAvatarImage path={avatarUrl} className="mr-4 h-24 w-24 rounded-full" />
+                  <Text className="max-w-[60%] truncate text-2xl font-bold text-white">
+                    {firstName?.trim()}
+                  </Text>
+                </View>
 
-            {/* Profile Section */}
-            <View className="flex-row items-center justify-between rounded-lg border-2 border-zinc-900 p-5 shadow-md">
-              <View className="mr-5 flex-shrink flex-row items-center">
-                <SupaAvatarImage path={avatarUrl} className="mr-4 h-24 w-24 rounded-full" />
-                <Text className="max-w-[60%] truncate text-2xl font-bold text-white">
-                  {firstName?.trim()}
-                </Text>
+                {/* Edit Profile Button */}
+                <Pressable
+                  disabled={loading}
+                  onPress={editProfile}
+                  className="rounded-lg bg-indigo-500 px-5 py-3 shadow-lg transition active:scale-95 disabled:bg-gray-400">
+                  <Text className="text-center text-lg font-semibold text-white">
+                    {loading ? 'Saving...' : 'Edit Profile'}
+                  </Text>
+                </Pressable>
               </View>
 
-              {/* Edit Profile Button */}
-              <Pressable
-                disabled={loading}
-                onPress={editProfile}
-                className="rounded-lg bg-indigo-500 px-5 py-3 shadow-lg transition active:scale-95 disabled:bg-gray-400">
-                <Text className="text-center text-lg font-semibold text-white">
-                  {loading ? 'Saving...' : 'Edit Profile'}
-                </Text>
-              </Pressable>
+              {/* Dashboard */}
+              <Text className="mx-5 text-xl font-semibold text-cyan-700">
+                {role === 'admin' ? 'Admin Dashboard' : 'Your Dashboard'}
+              </Text>
+
+              {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
+
+              {/* Sign Out Button */}
+              <View className="w-full max-w-lg">
+                <Pressable
+                  disabled={loading}
+                  onPress={signOut}
+                  className="mt-5 rounded-xl bg-red-500 p-4 px-5 hover:bg-red-700">
+                  <Text className="text-center text-lg font-semibold text-white">Sign Out</Text>
+                </Pressable>
+              </View>
             </View>
-
-            {/* Dashboard */}
-            <Text className="mx-5 text-xl font-semibold text-cyan-700">
-              {role === 'admin' ? 'Admin Dashboard' : 'Your Dashboard'}
-            </Text>
-
-            <View className="mx-5 gap-3"></View>
-            {role === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
-
-            {/* Sign Out Button */}
-            <View>
-              <Pressable
-                disabled={loading}
-                onPress={signOut}
-                className="mt-5 w-full rounded-xl bg-red-500 p-4 px-5 hover:bg-red-700">
-                <Text className="text-center text-lg font-semibold text-white">Sign Out</Text>
-              </Pressable>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

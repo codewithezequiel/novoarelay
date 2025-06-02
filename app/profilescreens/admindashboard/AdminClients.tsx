@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import AdminClientListItem from '~/components/AdminClientListItem';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
@@ -40,7 +40,7 @@ export default function AdminClientList() {
   }
 
   return (
-    <>
+    <SafeAreaView className="flex-1 bg-black">
       <Stack.Screen
         options={{
           title: 'Clients',
@@ -49,12 +49,12 @@ export default function AdminClientList() {
           headerBackTitle: 'Back',
         }}
       />
-      <View className="flex-1 bg-black p-4">
+      <View className="flex-1 items-center justify-center bg-black p-4">
         {loading ? (
           <ActivityIndicator size="large" color="#c8b6ff" />
         ) : clients.length > 0 ? (
           <FlatList
-            className="p-5"
+            className="w-full max-w-lg p-5"
             data={clients}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <AdminClientListItem client={item} />}
@@ -63,6 +63,6 @@ export default function AdminClientList() {
           <Text className="text-center text-white">No clients found.</Text>
         )}
       </View>
-    </>
+    </SafeAreaView>
   );
 }

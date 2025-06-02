@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  SafeAreaView,
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { supabase } from '~/utils/supabase';
 import { useAuth } from '~/contexts/AuthProvider';
@@ -63,7 +70,7 @@ export default function TruckForm() {
   };
 
   return (
-    <>
+    <SafeAreaView className="flex-1 bg-black">
       <Stack.Screen
         options={{
           title: 'Truck Form',
@@ -71,7 +78,7 @@ export default function TruckForm() {
           headerStyle: { backgroundColor: 'black' },
         }}
       />
-      <View className="flex-1 justify-center  bg-black p-5">
+      <View className="flex-1 items-center justify-center bg-black p-5">
         <Text className="mb-5 text-center text-xl font-bold text-white">Add Your Truck</Text>
 
         {/* Truck Name Input */}
@@ -85,7 +92,7 @@ export default function TruckForm() {
                 placeholder="Truck Name"
                 value={value}
                 onChangeText={onChange}
-                className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+                className="mb-2 w-full max-w-lg rounded-xl bg-zinc-800 p-3 font-bold text-white"
                 placeholderTextColor="gray"
               />
               {errors.name && <Text className="text-red-500">{errors.name.message}</Text>}
@@ -104,7 +111,7 @@ export default function TruckForm() {
                 placeholder="Truck Model"
                 value={value}
                 onChangeText={onChange}
-                className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+                className="mb-2 w-full max-w-lg rounded-xl bg-zinc-800 p-3 font-bold text-white"
                 placeholderTextColor="gray"
               />
               {errors.model && <Text className="text-red-500">{errors.model.message}</Text>}
@@ -123,7 +130,7 @@ export default function TruckForm() {
                 placeholder="Plate Number"
                 value={value}
                 onChangeText={onChange}
-                className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+                className="mb-2 w-full max-w-lg rounded-xl bg-zinc-800 p-3 font-bold text-white"
                 placeholderTextColor="gray"
               />
               {errors.plate_number && (
@@ -144,7 +151,7 @@ export default function TruckForm() {
                 placeholder="Year"
                 value={value}
                 onChangeText={onChange}
-                className="mb-2 rounded-xl bg-zinc-800 p-3 font-bold text-white"
+                className="mb-2 w-full max-w-lg rounded-xl bg-zinc-800 p-3 font-bold text-white"
                 placeholderTextColor="gray"
               />
               {errors.year && <Text className="text-red-500">{errors.year.message}</Text>}
@@ -156,7 +163,7 @@ export default function TruckForm() {
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
           disabled={isSubmitting}
-          className={`mt-4 rounded-md bg-blue-500 p-4 ${isSubmitting ? 'opacity-50' : ''}`}>
+          className={`mt-4 w-full max-w-lg rounded-md bg-blue-500 p-4 ${isSubmitting ? 'opacity-50' : ''}`}>
           {isSubmitting ? (
             <ActivityIndicator color="white" />
           ) : (
@@ -164,6 +171,6 @@ export default function TruckForm() {
           )}
         </TouchableOpacity>
       </View>
-    </>
+    </SafeAreaView>
   );
 }

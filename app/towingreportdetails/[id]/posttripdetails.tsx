@@ -14,7 +14,7 @@ export default function PostTripDetails() {
           headerTintColor: 'white',
         }}
       />
-      <View>
+      <View className="flex-1 bg-black">
         <PostTripForm eventId={id} />
       </View>
     </>

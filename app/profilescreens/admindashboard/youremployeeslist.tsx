@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text, View, FlatList, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 import EmployeeListItem from '~/components/EmployeeListItem';
@@ -42,7 +42,7 @@ export default function EmployeesList() {
   }
 
   return (
-    <>
+    <SafeAreaView className="flex-1 bg-black">
       <Stack.Screen
         options={{
           title: 'Employees',
@@ -51,12 +51,12 @@ export default function EmployeesList() {
           headerTintColor: 'white',
         }}
       />
-      <View className="h-full bg-black p-5">
+      <View className="flex-1 items-center justify-center bg-black p-5">
         {loading ? (
           <ActivityIndicator size="large" color="#c8b6ff" />
         ) : employees.length > 0 ? (
           <FlatList
-            className="p-2"
+            className="w-full max-w-lg p-2"
             data={employees}
             keyExtractor={(item) => item.first_name + item.last_name} // Unique key
             renderItem={({ item }) => (
@@ -73,6 +73,6 @@ export default function EmployeesList() {
           <Text className="text-gray-400">No employees found.</Text>
         )}
       </View>
-    </>
+    </SafeAreaView>
   );
 }

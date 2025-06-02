@@ -39,7 +39,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <View className="gap-4 p-4 ">
+    <View className="w-full max-w-lg gap-4 bg-black">
       {sections.map((section, index) => (
         <Pressable
           key={index}

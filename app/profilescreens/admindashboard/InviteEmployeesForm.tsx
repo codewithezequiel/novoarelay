@@ -1,4 +1,4 @@
-import { View, Pressable, Text, TextInput, Alert } from 'react-native';
+import { View, Pressable, Text, TextInput, Alert, SafeAreaView } from 'react-native';
 import { useState } from 'react';
 import { supabase } from '~/utils/supabase';
 import { useAuth } from '~/contexts/AuthProvider';
@@ -45,7 +45,7 @@ export default function InviteDropdown() {
   }
 
   return (
-    <>
+    <SafeAreaView className="flex-1 items-center bg-black">
       <Stack.Screen
         options={{
           title: 'Invite',
@@ -54,7 +54,7 @@ export default function InviteDropdown() {
           headerBackTitle: 'Back',
         }}
       />
-      <View className="flex-1 bg-black">
+      <View className="w-full max-w-lg flex-1 justify-center bg-black">
         {/* Invite Employee Button */}
         <Text className="my-10 text-center text-xl font-medium text-white">
           Have any employees? Send them an invite!{' '}
@@ -83,6 +83,6 @@ export default function InviteDropdown() {
           </View>
         )}
       </View>
-    </>
+    </SafeAreaView>
   );
 }

@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
@@ -216,91 +217,92 @@ export default function CreateEvent() {
   };
 
   return (
-    <>
-      <ScrollView className="bg-black p-5">
-        <View className="mb-6">
-          <Text className="mb-4 text-2xl font-extrabold text-white">Pre Trip Details</Text>
-        </View>
+    <SafeAreaView className="flex-1 bg-black ">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} className=" p-6">
+        <View className="flex-1 items-center justify-center bg-black p-6">
+          <View className="mb-6">
+            <Text className="mb-4 text-2xl font-extrabold text-white">Pre Trip Details</Text>
+          </View>
 
-        {/* Trip Pickup Location */}
-        <View className="mb-6">
-          <Text className="text-lg font-semibold text-white">Trip Pickup Location</Text>
-          <PickupAddressAutocomplete
-            onSelected={(pickupLocation) => {
-              console.log(pickupLocation);
-              setPickupLocation(pickupLocation);
-            }}
-          />
-        </View>
+          {/* Trip Pickup Location */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Trip Pickup Location</Text>
+            <PickupAddressAutocomplete
+              onSelected={(pickupLocation) => {
+                console.log(pickupLocation);
+                setPickupLocation(pickupLocation);
+              }}
+            />
+          </View>
 
-        {/* Trip Dropoff Location */}
-        <View className="mb-6">
-          <Text className="text-lg font-semibold text-white">Trip Dropoff Location</Text>
-          {/* <TextInput
+          {/* Trip Dropoff Location */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Trip Dropoff Location</Text>
+            {/* <TextInput
             placeholder="Enter dropoff location"
             placeholderTextColor="#A1A1AA"
             value={dropoffLocation}
             onChangeText={setDropoffLocation}
             className="mt-2 rounded-lg border border-gray-700 bg-zinc-800 p-4 text-white"
           /> */}
-          <DropoffAddressAutocomplete
-            onSelected={(dropoffLocation) => {
-              console.log(dropoffLocation);
-              setDropoffLocation(dropoffLocation);
-            }}
-          />
-        </View>
+            <DropoffAddressAutocomplete
+              onSelected={(dropoffLocation) => {
+                console.log(dropoffLocation);
+                setDropoffLocation(dropoffLocation);
+              }}
+            />
+          </View>
 
-        {/* Client Name */}
-        <View className="mb-6">
-          <Text className="text-lg font-semibold text-white">Client Name</Text>
-          <TextInput
-            placeholder="Enter client name"
-            placeholderTextColor="#A1A1AA"
-            value={clientName}
-            onChangeText={setClientName}
-            className="mt-2 rounded-lg border border-gray-700 bg-zinc-800 p-4 text-white"
-          />
-        </View>
+          {/* Client Name */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Client Name</Text>
+            <TextInput
+              placeholder="Enter client name"
+              placeholderTextColor="#A1A1AA"
+              value={clientName}
+              onChangeText={setClientName}
+              className="mt-2 rounded-lg border border-gray-700 bg-zinc-800 p-4 text-white"
+            />
+          </View>
 
-        {/* Select Your Truck Model */}
-        <View className="mb-6">
-          <Text className="text-lg font-semibold text-white">Select Your Truck Model</Text>
-          <Picker
-            selectedValue={truckModel}
-            onValueChange={setTruckModel}
-            className="mt-2 rounded-lg border border-gray-700 bg-zinc-800 p-4 text-white">
-            {trucks.map((truck) => (
-              <Picker.Item color="white" key={truck.id} label={truck.model} value={truck.model} />
-            ))}
-          </Picker>
-        </View>
+          {/* Select Your Truck Model */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Select Your Truck Model</Text>
+            <Picker
+              selectedValue={truckModel}
+              onValueChange={setTruckModel}
+              className="mt-2 rounded-lg border border-gray-700 bg-zinc-800 p-4 text-white">
+              {trucks.map((truck) => (
+                <Picker.Item color="white" key={truck.id} label={truck.model} value={truck.model} />
+              ))}
+            </Picker>
+          </View>
 
-        {/* Trip Status */}
-        <View className="mb-6">
-          <Text className="text-lg font-semibold text-white">Trip Status</Text>
-          <Picker
-            selectedValue={status}
-            onValueChange={setStatus}
-            className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white">
-            <Picker.Item color="white" label="In Progress" value="in_progress" />
-            <Picker.Item color="white" label="Completed" value="completed" />
-          </Picker>
-        </View>
+          {/* Trip Status */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Trip Status</Text>
+            <Picker
+              selectedValue={status}
+              onValueChange={setStatus}
+              className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white">
+              <Picker.Item color="white" label="In Progress" value="in_progress" />
+              <Picker.Item color="white" label="Completed" value="completed" />
+            </Picker>
+          </View>
 
-        {/* Create Event Button */}
-        <Pressable
-          onPress={createEvent}
-          disabled={loading}
-          className={`mt-5 rounded-lg bg-blue-600 p-4 ${loading ? 'opacity-50' : ''}`}>
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text className="text-center font-semibold text-white">Create Event</Text>
-          )}
-        </Pressable>
-        <View className="my-10"></View>
+          {/* Create Event Button */}
+          <Pressable
+            onPress={createEvent}
+            disabled={loading}
+            className={`mt-5 w-full max-w-sm rounded-lg bg-blue-600 p-4 ${loading ? 'opacity-50' : ''}`}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text className="text-center font-semibold text-white">Create Event</Text>
+            )}
+          </Pressable>
+        </View>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 }

@@ -90,17 +90,17 @@ export default function TowReportPage() {
   const employeeFirstName = event?.profiles?.first_name;
   const employeeLastName = event?.profiles?.last_name;
 
-  if (loading) {
-    return <ActivityIndicator />;
-  }
+  // if (loading) {
+  //   return <ActivityIndicator />;
+  // }
 
   if (!event) {
     return <Text>Event not found.</Text>;
   }
 
   return (
-    <View className="max-w-screen-sm flex-1 bg-black p-6 pb-10 text-white">
-      <ScrollView className=" p-5 pb-20">
+    <ScrollView className="flex-1 bg-black p-5 pb-20">
+      <View className="max-w-screen flex-1 items-center justify-center bg-black p-6 pb-10 text-white">
         <Stack.Screen
           options={{
             title: 'Tow Report',
@@ -121,7 +121,7 @@ export default function TowReportPage() {
         <View className="mb-4 border-b border-gray-700 pb-2" />
 
         {/* Status Section */}
-        <View className="mb-6 flex-row items-center">
+        <View className="mb-6 w-full max-w-sm flex-row items-center">
           <Text
             className={`text-xl font-bold ${
               event?.status === 'in_progress' ? 'text-orange-400' : 'text-green-400'
@@ -131,7 +131,7 @@ export default function TowReportPage() {
         </View>
 
         {/* Trip Date */}
-        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+        <View className="mb-1 w-full max-w-sm rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
           <View className="flex-row gap-5">
             <Ionicons name="time-outline" size={28} color="#6366f1" />
             <Text className="mb-4 text-xl font-semibold text-white">Report</Text>
@@ -142,7 +142,7 @@ export default function TowReportPage() {
         </View>
 
         {/* Client Details */}
-        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+        <View className="mb-1 w-full max-w-sm rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
           <View className="flex-row gap-5">
             <Ionicons name="newspaper-outline" size={28} color="#6366f1" />
             <Text className="mb-4 text-xl font-semibold text-white">Client Details</Text>
@@ -175,7 +175,7 @@ export default function TowReportPage() {
         </View>
 
         {/* Description */}
-        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+        <View className="mb-1  w-full max-w-sm rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
           <View className="flex-row gap-5">
             <Ionicons name="pencil-outline" size={28} color="#6366f1" />
             <Text className="mb-4 text-xl font-semibold text-white">Description</Text>
@@ -186,7 +186,7 @@ export default function TowReportPage() {
         </View>
 
         {/* Pickup & Dropoff Locations */}
-        <View className="mb-1 rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
+        <View className="mb-1 w-full max-w-sm rounded-lg border border-white bg-zinc-800 p-6 shadow-lg">
           <View className="flex-row gap-5">
             <Ionicons name="location-outline" size={28} color="#6366f1" />
             <Text className="mb-4 text-xl font-semibold text-white">Locations</Text>
@@ -200,7 +200,7 @@ export default function TowReportPage() {
         </View>
 
         {/* Employee Info */}
-        <View className="my-6 flex-row items-center">
+        <View className="my-6 w-full max-w-sm flex-row items-center">
           <SupaAvatarImage path={employeeImage} className="mr-5 h-24 w-24 rounded-full" />
           <View className="align-middle">
             <Text className="text-2xl font-semibold text-white">
@@ -215,21 +215,22 @@ export default function TowReportPage() {
         </View>
 
         {/* Update Trip Details Link */}
-        <Link
-          href={`/towingreportdetails/${event.id}/posttripdetails`}
-          className="mt-6 rounded-xl bg-blue-600 p-5 shadow-lg transition-all duration-300 hover:bg-blue-700 active:scale-95">
-          <Text className="text-center text-xl font-semibold text-white">Update Trip Details</Text>
-        </Link>
+
+        <Pressable
+          onPress={() => router.push(`/towingreportdetails/${event.id}/posttripdetails`)}
+          className="my-6  w-full max-w-sm rounded-xl bg-blue-500 p-5 shadow-lg transition-all duration-300 hover:bg-blue-700 active:scale-95">
+          <Text className="text-center  text-xl font-semibold text-white">Update Trip Details</Text>
+        </Pressable>
 
         {/* Delete Button (for admins) */}
         {role === 'admin' && (
           <Pressable
             onPress={() => deleteTowReport()}
-            className="my-6 rounded-xl bg-red-600 p-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
+            className="my-6 w-full max-w-sm rounded-xl bg-red-600 p-5 shadow-lg transition-all duration-300 hover:bg-red-700 active:scale-95">
             <Text className="text-center text-xl font-semibold text-white">Delete Tow Report</Text>
           </Pressable>
         )}
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }

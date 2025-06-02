@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
@@ -99,82 +100,86 @@ export default function PostTripForm({ eventId }) {
   };
 
   return (
-    <ScrollView className="bg-black p-5">
-      <View className="mb-6">
-        <Text className="mb-4  text-2xl font-extrabold text-white">Post Trip Details</Text>
-      </View>
+    <SafeAreaView className="flex-1 bg-black ">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} className=" p-6">
+        <View className="flex-1 items-center justify-center bg-black p-6">
+          <View className="mb-6">
+            <Text className="mb-4  text-2xl font-extrabold text-white">Post Trip Details</Text>
+          </View>
 
-      {/* Client Vehicle Model */}
-      <View className="mb-6">
-        <Text className="text-lg font-semibold text-white">Client Vehicle Model</Text>
-        <TextInput
-          placeholder="Enter client vehicle model"
-          placeholderTextColor="#A1A1AA"
-          value={clientVehicleModel}
-          onChangeText={setClientVehicleModel}
-          className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
-        />
-      </View>
+          {/* Client Vehicle Model */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Client Vehicle Model</Text>
+            <TextInput
+              placeholder="Enter client vehicle model"
+              placeholderTextColor="#A1A1AA"
+              value={clientVehicleModel}
+              onChangeText={setClientVehicleModel}
+              className="mt-2  rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
+            />
+          </View>
 
-      {/* Client Vehicle VIN */}
-      <View className="mb-6">
-        <Text className="text-lg font-semibold text-white">Client Vehicle Vin Number</Text>
-        <TextInput
-          placeholder="Enter client vin number"
-          placeholderTextColor="#A1A1AA"
-          value={clientVehicleVinNumb}
-          onChangeText={setClientVehicleVinNum}
-          className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
-        />
-      </View>
+          {/* Client Vehicle VIN */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Client Vehicle Vin Number</Text>
+            <TextInput
+              placeholder="Enter client vin number"
+              placeholderTextColor="#A1A1AA"
+              value={clientVehicleVinNumb}
+              onChangeText={setClientVehicleVinNum}
+              className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
+            />
+          </View>
 
-      {/* Client Vehicle License Plate */}
-      <View className="mb-6">
-        <Text className="text-lg font-semibold text-white">Client Vehicle License Plate</Text>
-        <TextInput
-          placeholder="Enter client license plate number"
-          placeholderTextColor="#A1A1AA"
-          value={clientVehicleLP}
-          onChangeText={setClientVehicleLP}
-          className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
-        />
-      </View>
+          {/* Client Vehicle License Plate */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Client Vehicle License Plate</Text>
+            <TextInput
+              placeholder="Enter client license plate number"
+              placeholderTextColor="#A1A1AA"
+              value={clientVehicleLP}
+              onChangeText={setClientVehicleLP}
+              className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
+            />
+          </View>
 
-      {/* Client Vehicle Number */}
-      <View className="mb-6">
-        <Text className="text-lg font-semibold text-white">Client Vehicle Number</Text>
-        <TextInput
-          placeholder="Enter client truck number"
-          placeholderTextColor="#A1A1AA"
-          value={clientVehicleNum}
-          onChangeText={setClientVehicleNum}
-          className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
-        />
-      </View>
+          {/* Client Vehicle Number */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Client Vehicle Number</Text>
+            <TextInput
+              placeholder="Enter client truck number"
+              placeholderTextColor="#A1A1AA"
+              value={clientVehicleNum}
+              onChangeText={setClientVehicleNum}
+              className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white"
+            />
+          </View>
 
-      {/* Trip Status */}
-      <View className="mb-6">
-        <Text className="text-lg font-semibold text-white">Trip Status</Text>
-        <Picker
-          selectedValue={status}
-          onValueChange={setStatus}
-          className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white">
-          <Picker.Item color="white" label="In Progress" value="in_progress" />
-          <Picker.Item color="white" label="Completed" value="completed" />
-        </Picker>
-      </View>
+          {/* Trip Status */}
+          <View className="mb-6 w-full max-w-sm">
+            <Text className="text-lg font-semibold text-white">Trip Status</Text>
+            <Picker
+              selectedValue={status}
+              onValueChange={setStatus}
+              className="mt-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-white">
+              <Picker.Item color="white" label="In Progress" value="in_progress" />
+              <Picker.Item color="white" label="Completed" value="completed" />
+            </Picker>
+          </View>
 
-      {/* Confirm Button */}
-      <Pressable
-        onPress={confirmEvent}
-        disabled={loading}
-        className={`mt-5 rounded-lg bg-blue-600 p-4 ${loading ? 'opacity-50' : ''}`}>
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text className="text-center font-semibold text-white">Confirm Event</Text>
-        )}
-      </Pressable>
-    </ScrollView>
+          {/* Confirm Button */}
+          <Pressable
+            onPress={confirmEvent}
+            disabled={loading}
+            className={`mt-5 w-full max-w-sm rounded-lg bg-blue-600 p-4 ${loading ? 'opacity-50' : ''}`}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text className="text-center font-semibold text-white">Confirm Event</Text>
+            )}
+          </Pressable>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, SafeAreaView, Text, View } from 'react-native';
 import { Stack } from 'expo-router';
 import TruckListItem from '~/components/AdminTruckListItem';
 import { useAuth } from '~/contexts/AuthProvider';
@@ -41,7 +41,7 @@ export default function AdminTruckList() {
   }
 
   return (
-    <>
+    <SafeAreaView className="flex-1 bg-black">
       <Stack.Screen
         options={{
           title: 'Trucks',
@@ -50,12 +50,12 @@ export default function AdminTruckList() {
           headerTintColor: 'white',
         }}
       />
-      <View className="h-full bg-black p-5">
+      <View className="flex-1 items-center justify-center bg-black p-5">
         {loading ? (
           <ActivityIndicator size="large" color="#c8b6ff" />
         ) : trucks.length > 0 ? (
           <FlatList
-            className="p-5"
+            className="w-full max-w-lg p-5"
             data={trucks}
             keyExtractor={(item) => item.id.toString()} // Ensuring each key is unique
             renderItem={({ item }) => <TruckListItem truck={item} />}
@@ -64,6 +64,6 @@ export default function AdminTruckList() {
           <Text className="text-gray-400">No trucks found.</Text>
         )}
       </View>
-    </>
+    </SafeAreaView>
   );
 }
