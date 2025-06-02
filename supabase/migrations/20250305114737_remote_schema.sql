@@ -2,9 +2,9 @@ create schema if not exists "gis";
 
 create extension if not exists "postgis" with schema "gis" version '3.3.7';
 
-create type "gis"."geometry_dump" as ("path" integer[], "geom" gis.geometry);
+-- create type "gis"."geometry_dump" as ("path" integer[], "geom" gis.geometry);
 
-create type "gis"."valid_detail" as ("valid" boolean, "reason" character varying, "location" gis.geometry);
+-- create type "gis"."valid_detail" as ("valid" boolean, "reason" character varying, "location" gis.geometry);
 
 
 create sequence "public"."truck_locations_id_seq";

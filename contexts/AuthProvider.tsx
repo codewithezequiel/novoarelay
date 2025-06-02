@@ -1,66 +1,75 @@
 import { Session } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { supabase } from '~/utils/supabase';
 
 const AuthContext = createContext({});
 
 export default function AuthProvider({ children }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [isReady, setIsReady] = useState(false);
-  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
+  const [isProfileLoaded, setIsProfileLoaded] = useState(false);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
 
-  // Fetch profile details
   const fetchProfile = async (userId: string) => {
     if (!userId) return;
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('onboarding_completed')
-      .eq('id', userId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('onboarding_completed')
+        .eq('id', userId)
+        .single();
 
-    if (error) {
-      console.error('Error fetching profile:', error);
-      setIsOnboardingComplete(false); // Default to false on error
-    } else {
-      setIsOnboardingComplete(data?.onboarding_completed);
-      console.log('Fetched onboarding_completed:', data?.onboarding_completed);
+      if (error) {
+        console.error('Error fetching profile:', error);
+        setIsOnboardingComplete(false);
+      } else {
+        setIsOnboardingComplete(data?.onboarding_completed ?? false);
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      setIsOnboardingComplete(false);
+    } finally {
+      setIsProfileLoaded(true);
     }
   };
 
   useEffect(() => {
-    const init = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    // Initial fetch of session on mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setIsReady(true);
-
       if (session?.user) {
-        await fetchProfile(session.user.id);
-      }
-    };
-
-    init();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-
-      if (session?.user) {
-        await fetchProfile(session.user.id);
+        setIsProfileLoaded(false);
+        fetchProfile(session.user.id);
       } else {
-        setIsOnboardingComplete(null); // Reset on sign out
+        setIsProfileLoaded(true); // no user means profile is loaded (empty)
+      }
+    });
+
+    // Subscribe to auth state changes
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+
+      if (session?.user) {
+        setIsProfileLoaded(false);
+        fetchProfile(session.user.id);
+      } else {
+        setIsOnboardingComplete(false);
+        setIsProfileLoaded(true);
       }
     });
 
     return () => {
-      authListener.subscription.unsubscribe();
+      listener.subscription.unsubscribe();
     };
   }, []);
 
-  if (!isReady) {
-    return <ActivityIndicator />;
+  if (!isProfileLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (
