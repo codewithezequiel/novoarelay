@@ -13,7 +13,7 @@ export default function HighlightCard({ title, icon, value }: Props) {
         <View className="aspect-[3/2] w-full items-center justify-center overflow-hidden rounded-lg bg-black">
           <Image
             source={icon}
-            className="h-full max-w-56 sm:max-w-56 " // 🔧 Stretch image to fill container
+            className="h-full max-w-56 sm:max-w-56" // 🔧 Stretch image to fill container
             resizeMode="contain" // 🔧 Fill container without leaving space
           />
         </View>
