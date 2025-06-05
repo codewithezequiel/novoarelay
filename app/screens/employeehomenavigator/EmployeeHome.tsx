@@ -33,11 +33,11 @@ export default function EmployeeHome() {
   // }
 
   return (
-    <>
+    <View className="flex-1  bg-black">
       <Stack.Screen
         options={{
           headerTitle: () => (
-            <View className=" p-6">
+            <View className="p-6">
               <Text className="text-white">NOVOARELAY</Text>
               {/* <Image
                 source={require('~/assets/novoarelay.jpg')}
@@ -50,7 +50,7 @@ export default function EmployeeHome() {
         }}
       />
       <FlatList
-        className="bg-black p-5"
+        className="bg-black p-6"
         data={events}
         renderItem={({ item }) => (
           <View>
@@ -58,6 +58,6 @@ export default function EmployeeHome() {
           </View>
         )}
       />
-    </>
+    </View>
   );
 }
