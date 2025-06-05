@@ -13,7 +13,10 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import NovoaRelayLogo from '~/components/NovoaRelayLogo';
 import { supabase } from '~/utils/supabase';
+import { LinearGradient } from 'expo-linear-gradient';
+import NovoaRelayHome from '~/components/NovoaRelayHome';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -89,73 +92,75 @@ export default function Auth() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
-      <KeyboardAvoidingView
-        className="flex-1"
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20} // adjust if needed
-      >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          className="bg-black"
-          keyboardShouldPersistTaps="handled">
-          <View className="flex-1 items-center justify-center px-4">
-            <Stack.Screen
-              options={{
-                title: 'User Login',
-                headerStyle: { backgroundColor: 'black' },
-                headerTintColor: 'white',
-              }}
-            />
-            {/* Image Section */}
-            <View className="my-4 aspect-square max-h-96 items-center justify-center overflow-hidden rounded-lg bg-black p-2">
-              <Image
-                source={require('~/assets/novoarelay.jpg')}
-                className="max-w-sm"
-                resizeMode="contain"
-              />
-            </View>
+    <LinearGradient
+      colors={['#1c1c1e', '#3a3a3c', '#1e1b4b']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1 }} // ✅ required, don't use className here
+    >
+      <SafeAreaView className="flex-1 ">
+        <KeyboardAvoidingView
+          className="flex-1"
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20} // adjust if needed
+        >
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+            <View className="flex-1 items-center justify-center p-6">
+              <View className="w-full max-w-md items-center justify-center rounded-xl bg-zinc-950 p-6">
+                <Stack.Screen
+                  options={{
+                    title: 'User Login',
+                    headerStyle: { backgroundColor: 'black' },
+                    headerTintColor: 'white',
+                  }}
+                />
+                {/* Logo Section */}
+                <View className="mb-10 max-w-sm bg-zinc-950">
+                  <NovoaRelayLogo fontSize={60} />
+                </View>
 
-            <View className="w-full max-w-sm gap-4 ">
-              <TextInput
-                className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-                onChangeText={setEmail}
-                value={email}
-                placeholder="Email"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                placeholderTextColor="gray"
-              />
-              <TextInput
-                className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-                onChangeText={setPassword}
-                value={password}
-                placeholder="Password"
-                secureTextEntry
-                autoCapitalize="none"
-                placeholderTextColor="gray"
-              />
-              <TouchableOpacity
-                className="flex w-full items-center rounded-lg bg-blue-600 py-3"
-                disabled={loading}
-                onPress={signInWithEmail}>
-                <Text className="font-semibold text-white">Sign In</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="flex w-full items-center rounded-lg bg-green-600 py-3"
-                disabled={loading}
-                onPress={signUpWithEmail}>
-                <Text className="font-semibold text-white">Sign Up</Text>
-              </TouchableOpacity>
+                <View className="w-full max-w-sm gap-4 ">
+                  <TextInput
+                    className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+                    onChangeText={setEmail}
+                    value={email}
+                    placeholder="Email"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    placeholderTextColor="gray"
+                  />
+                  <TextInput
+                    className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+                    onChangeText={setPassword}
+                    value={password}
+                    placeholder="Password"
+                    secureTextEntry
+                    autoCapitalize="none"
+                    placeholderTextColor="gray"
+                  />
+                  <TouchableOpacity
+                    className="flex w-full items-center rounded-xl bg-white/10 py-3"
+                    disabled={loading}
+                    onPress={signInWithEmail}>
+                    <Text className="font-semibold text-white">Sign In</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    className="flex w-full items-center rounded-lg bg-gray-200 py-3"
+                    disabled={loading}
+                    onPress={signUpWithEmail}>
+                    <Text className="font-semibold text-black">Sign Up</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text
+                  className="mt-4 cursor-pointer text-center text-blue-600 underline"
+                  onPress={() => setRedirectToAdminLogin(true)}>
+                  Need to log in as an admin?
+                </Text>
+              </View>
             </View>
-            <Text
-              className="mt-4 cursor-pointer text-center text-blue-600 underline"
-              onPress={() => setRedirectToAdminLogin(true)}>
-              Need to log in as an admin?
-            </Text>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }

@@ -5,6 +5,7 @@ import { useAuth } from '~/contexts/AuthProvider';
 import { useEffect, useState } from 'react';
 import { supabase } from '~/utils/supabase';
 import { View, Text, Image } from 'react-native';
+import NovoaRelayHomeLogo from '~/components/NovoaRelayHome';
 
 export default function TabLayout() {
   const { isAuthenticated, user } = useAuth();
@@ -26,6 +27,7 @@ export default function TabLayout() {
       }
       setLoading(false);
     }
+    console.log('User', user);
 
     fetchUserRole();
   }, [user]);
@@ -35,6 +37,7 @@ export default function TabLayout() {
   }
 
   if (loading) {
+    console.log('loading profile');
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Loading...</Text>
@@ -52,12 +55,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          headerTitle: () => (
-            <Image
-              source={require('~/assets/novoarelay.jpg')}
-              className="mt-5 h-24 w-24"
-              resizeMode="contain"
-            />
+          headerTitle: '',
+          headerLeft: () => (
+            <View className="bg-black px-2">
+              <NovoaRelayHomeLogo />
+            </View>
           ),
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
