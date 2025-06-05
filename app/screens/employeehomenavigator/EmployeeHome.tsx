@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { View, FlatList, Image } from 'react-native';
+import { View, FlatList, Image, Text } from 'react-native';
 import TRListItem from '~/components/TRListItem';
 import { supabase } from '~/utils/supabase';
 import { useEffect, useState } from 'react';
@@ -37,12 +37,13 @@ export default function EmployeeHome() {
       <Stack.Screen
         options={{
           headerTitle: () => (
-            <View className="mb-2 ">
-              <Image
+            <View className=" p-6">
+              <Text className="text-white">NOVOARELAY</Text>
+              {/* <Image
                 source={require('~/assets/novoarelay.jpg')}
                 className="h-24 w-24"
                 resizeMode="contain"
-              />
+              /> */}
             </View>
           ),
           headerStyle: { height: 140, backgroundColor: 'black' },
