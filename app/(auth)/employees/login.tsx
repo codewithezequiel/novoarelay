@@ -109,9 +109,10 @@ export default function Auth() {
               <View className="w-full max-w-md items-center justify-center rounded-xl bg-zinc-950 p-6">
                 <Stack.Screen
                   options={{
-                    title: 'User Login',
+                    title: 'Login',
                     headerStyle: { backgroundColor: 'black' },
                     headerTintColor: 'white',
+                    headerShown: false,
                   }}
                 />
                 {/* Logo Section */}

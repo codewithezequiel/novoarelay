@@ -163,12 +163,12 @@ export default function CompanyAuth() {
 
   return (
     <LinearGradient
-      colors={['#1c1c1e', '#3a3a3c', '#1e1b4b']}
+      colors={['#1e1b4b', '#2e2a56', '#0f0f24']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={{ flex: 1 }} // ✅ required, don't use className here
     >
-      <SafeAreaView className="flex-1 ">
+      <SafeAreaView className="flex-1">
         <KeyboardAvoidingView
           className="flex-1"
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -182,6 +182,7 @@ export default function CompanyAuth() {
                     headerStyle: { backgroundColor: 'black' },
                     headerTintColor: 'white',
                     title: isSignUp ? 'Company Registration' : 'Admin Login',
+                    headerShown: false,
                   }}
                 />
                 {/* Logo Section */}

@@ -12,7 +12,7 @@ export default function TRListItem({ report }) {
   return (
     <Link href={`/towingreportdetails/${report.id}`} asChild>
       <Pressable className="w-full flex-1 items-center justify-center bg-black">
-        <View className="my-4 w-full max-w-lg rounded-2xl bg-zinc-800 p-6 shadow-lg">
+        <View className="my-4 w-full max-w-lg rounded-2xl border border-indigo-400 bg-zinc-900 p-6 shadow-lg">
           {/* Timestamp */}
           <View className="mb-4 border-b border-gray-700 pb-2">
             <Text className="text-sm font-medium text-pink-500">

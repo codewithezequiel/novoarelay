@@ -36,16 +36,6 @@ export default function EmployeeHome() {
     <View className="flex-1  bg-black">
       <Stack.Screen
         options={{
-          headerTitle: () => (
-            <View className="p-6">
-              <Text className="text-white">NOVOARELAY</Text>
-              {/* <Image
-                source={require('~/assets/novoarelay.jpg')}
-                className="h-24 w-24"
-                resizeMode="contain"
-              /> */}
-            </View>
-          ),
           headerStyle: { height: 140, backgroundColor: 'black' },
         }}
       />
