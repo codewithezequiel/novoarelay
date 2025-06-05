@@ -9,6 +9,9 @@ import {
   AppState,
   Image,
   ScrollView,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { supabase } from '~/utils/supabase';
 
@@ -86,60 +89,73 @@ export default function Auth() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-black p-10">
-      <View className="items-center justify-center p-10">
-        <Stack.Screen
-          options={{
-            title: 'User Login',
-            headerStyle: { backgroundColor: 'black' },
-            headerTintColor: 'white',
-          }}
-        />
-        {/* <View className="mb-10 items-center">
-          <Image
-            source={require('~/assets/novoarelay.jpg')}
-            className="h-48 w-48 "
-            resizeMode="contain"
-          />
-        </View> */}
-        <View className="w-full max-w-sm gap-4 ">
-          <TextInput
-            className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-            onChangeText={setEmail}
-            value={email}
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            placeholderTextColor="gray"
-          />
-          <TextInput
-            className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
-            onChangeText={setPassword}
-            value={password}
-            placeholder="Password"
-            secureTextEntry
-            autoCapitalize="none"
-            placeholderTextColor="gray"
-          />
-          <TouchableOpacity
-            className="flex w-full items-center rounded-lg bg-blue-600 py-3"
-            disabled={loading}
-            onPress={signInWithEmail}>
-            <Text className="font-semibold text-white">Sign In</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="flex w-full items-center rounded-lg bg-green-600 py-3"
-            disabled={loading}
-            onPress={signUpWithEmail}>
-            <Text className="font-semibold text-white">Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-        <Text
-          className="mt-4 cursor-pointer text-center text-blue-600 underline"
-          onPress={() => setRedirectToAdminLogin(true)}>
-          Need to log in as an admin?
-        </Text>
-      </View>
-    </ScrollView>
+    <SafeAreaView className="flex-1 bg-black">
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20} // adjust if needed
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          className="bg-black"
+          keyboardShouldPersistTaps="handled">
+          <View className="flex-1 items-center justify-center px-4">
+            <Stack.Screen
+              options={{
+                title: 'User Login',
+                headerStyle: { backgroundColor: 'black' },
+                headerTintColor: 'white',
+              }}
+            />
+            {/* Image Section */}
+            <View className="my-4 aspect-square max-h-96 items-center justify-center overflow-hidden rounded-lg bg-black p-2">
+              <Image
+                source={require('~/assets/novoarelay.jpg')}
+                className="max-w-sm"
+                resizeMode="contain"
+              />
+            </View>
+
+            <View className="w-full max-w-sm gap-4 ">
+              <TextInput
+                className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+                onChangeText={setEmail}
+                value={email}
+                placeholder="Email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                placeholderTextColor="gray"
+              />
+              <TextInput
+                className="w-full rounded-lg border border-zinc-400 bg-zinc-800 px-5 py-5 text-white"
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Password"
+                secureTextEntry
+                autoCapitalize="none"
+                placeholderTextColor="gray"
+              />
+              <TouchableOpacity
+                className="flex w-full items-center rounded-lg bg-blue-600 py-3"
+                disabled={loading}
+                onPress={signInWithEmail}>
+                <Text className="font-semibold text-white">Sign In</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="flex w-full items-center rounded-lg bg-green-600 py-3"
+                disabled={loading}
+                onPress={signUpWithEmail}>
+                <Text className="font-semibold text-white">Sign Up</Text>
+              </TouchableOpacity>
+            </View>
+            <Text
+              className="mt-4 cursor-pointer text-center text-blue-600 underline"
+              onPress={() => setRedirectToAdminLogin(true)}>
+              Need to log in as an admin?
+            </Text>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
