@@ -1,4 +1,4 @@
-import { Link, Redirect, Tabs } from 'expo-router';
+import { Link, Redirect, router, Tabs } from 'expo-router';
 import { HeaderButton } from '../../components/HeaderButton';
 import { TabBarIcon } from '../../components/TabBarIcon';
 import { useAuth } from '~/contexts/AuthProvider';
@@ -8,7 +8,7 @@ import { View, Text, Image } from 'react-native';
 import NovoaRelayHomeLogo from '~/components/NovoaRelayHome';
 
 export default function TabLayout() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isOnboardingComplete } = useAuth();
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,8 +36,16 @@ export default function TabLayout() {
     return <Redirect href={'/employees/login'} />;
   }
 
+  if (isAuthenticated) {
+    if (isOnboardingComplete === false) {
+      console.log('Redirecting to onboarding');
+      return <Redirect href={'/(auth)/onboarding/nameScreen'} />;
+    }
+  }
+
   if (loading) {
     console.log('loading profile');
+    console.log('Onboarding Status:', isOnboardingComplete);
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Loading...</Text>
