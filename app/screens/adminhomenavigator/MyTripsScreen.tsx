@@ -11,6 +11,7 @@ export default function MyTripsScreen() {
 
   useEffect(() => {
     fetchMyEvents();
+    console.log('App session:', session);
   }, []);
 
   async function fetchMyEvents() {
