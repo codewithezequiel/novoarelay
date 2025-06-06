@@ -8,13 +8,14 @@ import { supabase } from '~/utils/supabase';
 export default function OnboardingProfileScreen() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const { session } = useAuth();
+  const [uploaded, setUploaded] = useState(false); // ✅ Track if upload happened
+  const { session, fetchProfile } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!session) {
+    if (!session?.user) {
       Alert.alert('No session found');
-      router.push('/'); // Redirect if no session
+      router.replace('/');
     }
   }, [session]);
 
@@ -24,22 +25,52 @@ export default function OnboardingProfileScreen() {
     try {
       setLoading(true);
 
-      // 1. Update the avatar URL in the database
-      const { error: avatarError } = await supabase
+      const { error } = await supabase
         .from('profiles')
-        .update({ avatar_url: url, onboarding_completed: true }) // ✅ Set onboarding completed
+        .update({
+          avatar_url: url,
+          updated_at: new Date(),
+        })
         .eq('id', session.user.id);
 
-      if (avatarError) throw avatarError;
+      if (error) throw error;
 
       setAvatarUrl(url);
+      setUploaded(true); // ✅ Enable Complete button
 
-      // 2. Redirect the user to the home screen
-      Alert.alert('Onboarding completed!');
-      router.replace('/'); // ✅ Redirect to home
+      Alert.alert('Success!', 'Profile picture uploaded.');
     } catch (error) {
       console.error('Upload error:', error);
-      Alert.alert('Failed to upload profile picture');
+      Alert.alert('Error', 'Failed to upload profile picture');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleComplete = async () => {
+    if (!session?.user || !avatarUrl) return;
+
+    try {
+      setLoading(true);
+
+      // ✅ Finalize onboarding in database
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          onboarding_completed: true,
+          updated_at: new Date(),
+        })
+        .eq('id', session.user.id);
+
+      if (error) throw error;
+
+      await fetchProfile(session.user.id); // ✅ Refetch for context update
+
+      Alert.alert('Welcome!', 'Onboarding complete.');
+      router.replace('/');
+    } catch (error) {
+      console.error('Completion error:', error);
+      Alert.alert('Error', 'Could not complete onboarding');
     } finally {
       setLoading(false);
     }
@@ -51,22 +82,26 @@ export default function OnboardingProfileScreen() {
         options={{
           title: 'Upload',
           headerBackTitle: 'Back',
-          headerStyle: { backgroundColor: 'black' }, // Makes header black
+          headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
         }}
       />
+
       <ScrollView className="flex-1 bg-black p-5">
         <View className="mt-20 items-center">
           <Text className="mb-5 text-3xl font-bold text-white">Upload Profile Picture</Text>
 
-          {/* Avatar Component */}
-          <Avatar
-            size={200}
-            url={avatarUrl}
-            onUpload={handleUpload} // Trigger onboarding completion
-          />
+          <Avatar size={200} url={avatarUrl} onUpload={handleUpload} />
 
           {loading && <ActivityIndicator size="large" color="#00ff00" className="mt-5" />}
+
+          {/* ✅ Complete Button */}
+          <Pressable
+            disabled={!uploaded}
+            onPress={handleComplete}
+            className={`mt-10 max-w-lg rounded-xl px-6 py-4 ${uploaded ? 'bg-green-600' : 'bg-gray-600'}`}>
+            <Text className="text-lg font-semibold text-white">Complete</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </>

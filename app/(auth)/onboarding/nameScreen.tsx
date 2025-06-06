@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { useAuth } from '~/contexts/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
@@ -18,7 +18,7 @@ export default function NameScreen() {
         setLoading(true);
         const { data, error } = await supabase
           .from('profiles')
-          .select('first_name, last_name, onboarding_completed')
+          .select('first_name, last_name')
           .eq('id', session.user.id)
           .single();
 
@@ -27,19 +27,14 @@ export default function NameScreen() {
         } else if (data) {
           setFirstName(data.first_name || '');
           setLastName(data.last_name || '');
-
-          // 🚀 Redirect if already onboarded
-          if (data.onboarding_completed) {
-            console.log('Onboarding already completed. Redirecting...');
-            router.replace('/'); // Navigate to home
-          }
         }
+
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [session]);
+  }, []);
 
   async function updateProfile({
     first_name,
@@ -66,10 +61,8 @@ export default function NameScreen() {
 
       if (error) throw new Error('Update unsuccessful');
 
-      console.log('Profile details updated successfully');
-
-      // 🚀 Navigate away after successful onboarding
-      router.replace('/(auth)/onboarding/profileScreen');
+      console.log('Profile name updated');
+      router.replace('/(auth)/onboarding/profileScreen'); // ✅ Go to final onboarding screen
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
@@ -83,7 +76,7 @@ export default function NameScreen() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View className="flex-1 items-center justify-center bg-black p-5">
-        <View className="mb-10 w-full border-2 ">
+        <View className="mb-10 w-full border-2">
           <Text className="text-center text-lg font-bold text-white">Create Account</Text>
         </View>
         <View className="w-full max-w-sm gap-4">
@@ -94,7 +87,7 @@ export default function NameScreen() {
               placeholder="First Name"
               value={firstName}
               onChangeText={setFirstName}
-              autoCapitalize="none"
+              autoCapitalize="words"
               placeholderTextColor="gray"
             />
           </View>
@@ -106,10 +99,11 @@ export default function NameScreen() {
               placeholder="Last Name"
               value={lastName}
               onChangeText={setLastName}
-              autoCapitalize="none"
+              autoCapitalize="words"
               placeholderTextColor="gray"
             />
           </View>
+
           <Pressable
             className="flex items-center rounded-lg bg-green-600 py-3"
             disabled={loading}
@@ -117,8 +111,6 @@ export default function NameScreen() {
             <Text className="font-semibold text-white">Next</Text>
           </Pressable>
         </View>
-
-        <View></View>
       </View>
     </>
   );

@@ -80,6 +80,7 @@ export default function AuthProvider({ children }) {
         isAuthenticated: !!session?.user,
         isOnboardingComplete,
         setIsOnboardingComplete,
+        fetchProfile,
       }}>
       {children}
     </AuthContext.Provider>
