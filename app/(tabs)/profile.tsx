@@ -26,10 +26,19 @@ export default function Account() {
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw new Error(error.message);
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        console.warn('No active session found. Skipping sign out.');
+        return;
       }
+
+      const { error } = await supabase.auth.signOut();
+      if (error) throw new Error(error.message);
+
+      console.log('Signed out successfully');
     } catch (error) {
       console.error('Error signing out:', error.message);
     }

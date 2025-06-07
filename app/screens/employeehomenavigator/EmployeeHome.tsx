@@ -1,12 +1,13 @@
 import { Stack } from 'expo-router';
-import { View, FlatList, Image, Text } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import TRListItem from '~/components/TRListItem';
 import { supabase } from '~/utils/supabase';
 import { useEffect, useState } from 'react';
-import { NearbyEvent } from '~/types/db';
+import { useRouter } from 'expo-router';
 
 export default function EmployeeHome() {
   const [events, setEvents] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     fetchEvents();
@@ -16,38 +17,43 @@ export default function EmployeeHome() {
     const { data, error } = await supabase
       .from('events')
       .select(`*, profiles(avatar_url, first_name, last_name)`);
-    setEvents(data);
+    setEvents(data || []);
     console.log(error);
   }
 
-  // async function fetchNearbyEvents() {
-  //   const { data, error } = await supabase.rpc('nearby_events', {
-  //     lat: 33.7986,
-  //     long: -118.2358,
-  //   });
-  //   console.log(JSON.stringify(data, null, 2));
-  //   console.log(error);
-  //   if (data) {
-  //     setEvents(data);
-  //   }
-  // }
+  const isEmpty = events.length === 0;
 
   return (
-    <View className="flex-1  bg-black">
+    <View className="flex-1 bg-black">
       <Stack.Screen
         options={{
           headerStyle: { height: 140, backgroundColor: 'black' },
         }}
       />
-      <FlatList
-        className="bg-black p-6"
-        data={events}
-        renderItem={({ item }) => (
-          <View>
-            <TRListItem report={item} />
-          </View>
-        )}
-      />
+
+      {isEmpty ? (
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="mb-3 text-xl font-bold text-white">No Tow Jobs Yet</Text>
+          <Text className="mb-6 text-center text-gray-400">
+            Create your first trip to get started tracking your towing jobs!
+          </Text>
+          <TouchableOpacity
+            className="rounded-full bg-indigo-600 px-6 py-3"
+            onPress={() => router.push('/create')}>
+            <Text className="font-semibold text-white">Create job</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <FlatList
+          className="bg-black p-6"
+          data={events}
+          renderItem={({ item }) => (
+            <View>
+              <TRListItem report={item} />
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 }

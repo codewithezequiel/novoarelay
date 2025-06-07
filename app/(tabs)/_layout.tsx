@@ -38,6 +38,7 @@ export default function TabLayout() {
 
   if (isAuthenticated) {
     if (isOnboardingComplete === false) {
+      // supabase.auth.signOut();
       console.log('Redirecting to onboarding');
       return <Redirect href={'/(auth)/onboarding/nameScreen'} />;
     }
