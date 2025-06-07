@@ -1,10 +1,11 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useAuth } from '~/contexts/AuthProvider';
+import { supabase } from '~/utils/supabase';
 
 export default function AuthTabLayout() {
   const router = useRouter();
-  const { isAuthenticated, isOnboardingComplete } = useAuth();
+  const { isAuthenticated, isOnboardingComplete, session } = useAuth();
 
   console.log('Authenticated:', isAuthenticated);
   console.log('Onboarding complete:', isOnboardingComplete);
@@ -12,6 +13,7 @@ export default function AuthTabLayout() {
   useEffect(() => {
     if (isAuthenticated) {
       if (isOnboardingComplete === false) {
+        // supabase.auth.signOut();
         console.log('Redirecting to onboarding');
         router.replace('/(auth)/onboarding/nameScreen'); // Use router.replace for stable navigation
       } else if (isOnboardingComplete === true) {
@@ -19,7 +21,7 @@ export default function AuthTabLayout() {
         router.replace('/'); // Navigate to home after onboarding
       }
     }
-  }, [isAuthenticated, isOnboardingComplete]);
+  }, [isAuthenticated, isOnboardingComplete, session]);
 
   if (!isAuthenticated || isOnboardingComplete === null) {
     console.log('Loading or unauthenticated...');
