@@ -5,7 +5,7 @@ import { supabase } from '~/utils/supabase';
 
 export default function AuthTabLayout() {
   const router = useRouter();
-  const { isAuthenticated, isOnboardingComplete, session } = useAuth();
+  const { isAuthenticated, isOnboardingComplete } = useAuth();
 
   console.log('Authenticated:', isAuthenticated);
   console.log('Onboarding complete:', isOnboardingComplete);
@@ -13,7 +13,6 @@ export default function AuthTabLayout() {
   useEffect(() => {
     if (isAuthenticated) {
       if (isOnboardingComplete === false) {
-        // supabase.auth.signOut();
         console.log('Redirecting to onboarding');
         router.replace('/(auth)/onboarding/nameScreen'); // Use router.replace for stable navigation
       } else if (isOnboardingComplete === true) {
@@ -21,7 +20,7 @@ export default function AuthTabLayout() {
         router.replace('/'); // Navigate to home after onboarding
       }
     }
-  }, [isAuthenticated, isOnboardingComplete, session]);
+  }, [isAuthenticated, isOnboardingComplete]);
 
   if (!isAuthenticated || isOnboardingComplete === null) {
     console.log('Loading or unauthenticated...');
