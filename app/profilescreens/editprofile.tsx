@@ -2,6 +2,9 @@ import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -108,81 +111,96 @@ export default function EditProfileDetails() {
           headerStyle: { backgroundColor: 'black' },
         }}
       />
-      <ScrollView className="bg-black">
-        <TouchableWithoutFeedback onPress={() => setContainerDropdown(false)}>
-          <View className="flex-1 gap-3 p-5">
-            <View className="mt-20 items-center">
-              <Avatar
-                size={200}
-                url={avatarUrl}
-                onUpload={(url: string) => {
-                  setAvatarUrl(url);
-                  updateProfile({
-                    first_name: firstName,
-                    last_name: lastName,
-                    avatar_url: url,
-                  });
-                }}
-              />
-              <View className="w-full items-center  py-5">
-                <Text className="text-4xl font-bold text-white">{firstName}</Text>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={80}
+        className="flex-1">
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            className="flex-1 bg-black"
+            contentContainerStyle={{ flexGrow: 1 }}>
+            <View className="flex-1 items-center gap-5 p-5">
+              {/* Avatar and Name */}
+              <View className="mt-10 items-center">
+                <Avatar
+                  size={200}
+                  url={avatarUrl}
+                  onUpload={(url: string) => {
+                    setAvatarUrl(url);
+                    updateProfile({
+                      first_name: firstName,
+                      last_name: lastName,
+                      avatar_url: url,
+                    });
+                  }}
+                />
+                <Text className="mt-5 text-4xl font-bold text-white">{firstName}</Text>
+              </View>
+
+              {/* Form Inputs */}
+              <View className="w-full max-w-lg gap-5">
+                {/* First Name */}
+                <View>
+                  <Text className="mb-1 text-lg font-bold text-white">First Name</Text>
+                  <TextInput
+                    className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChangeText={setFirstName}
+                    autoCapitalize="none"
+                    placeholderTextColor="gray"
+                    maxLength={10}
+                  />
+                </View>
+
+                {/* Last Name */}
+                <View>
+                  <Text className="mb-1 text-lg font-bold text-white">Last Name</Text>
+                  <TextInput
+                    className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChangeText={setLastName}
+                    autoCapitalize="none"
+                    placeholderTextColor="gray"
+                  />
+                </View>
+
+                {/* Email (read-only) */}
+                <View>
+                  <Text className="mb-1 text-lg font-bold text-white">Email</Text>
+                  <TextInput
+                    className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
+                    placeholder="Email"
+                    value={session.user.email}
+                    editable={false}
+                    autoCapitalize="none"
+                    placeholderTextColor="gray"
+                  />
+                </View>
+
+                {/* Update Button */}
+                <Pressable
+                  disabled={loading}
+                  onPress={() =>
+                    updateProfile({
+                      first_name: firstName,
+                      last_name: lastName,
+                      avatar_url: avatarUrl,
+                    })
+                  }
+                  className="mt-3 w-full rounded-xl bg-indigo-500 p-4 shadow-lg active:scale-95 disabled:bg-gray-400">
+                  <Text className="text-center text-lg font-semibold text-white">
+                    {loading ? 'Updating...' : 'Update Profile'}
+                  </Text>
+                </Pressable>
               </View>
             </View>
-
-            <View className="mx-5 gap-3"></View>
-
-            <View className="mx-5 gap-3">
-              <Text className="text-lg font-bold text-white">First Name</Text>
-              <TextInput
-                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
-                placeholder="First Name"
-                value={firstName}
-                onChangeText={setFirstName}
-                autoCapitalize="none"
-                placeholderTextColor="gray"
-                maxLength={10}
-              />
-            </View>
-            <View className="mx-5 gap-3">
-              <Text className="text-lg font-bold text-white">Last Name</Text>
-              <TextInput
-                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
-                placeholder="Last Name"
-                value={lastName}
-                onChangeText={setLastName}
-                autoCapitalize="none"
-                placeholderTextColor="gray"
-              />
-            </View>
-
-            <View className="mx-5 gap-3">
-              <Text className="text-lg font-bold text-white">Email</Text>
-
-              <TextInput
-                className="w-full rounded-xl bg-zinc-800 px-4 py-3 font-bold text-white"
-                placeholder="Email"
-                value={session.user.email}
-                editable={false}
-                autoCapitalize="none"
-                placeholderTextColor="gray"
-              />
-            </View>
-
-            <Pressable
-              disabled={loading}
-              onPress={() =>
-                updateProfile({
-                  first_name: firstName,
-                  last_name: lastName,
-                  avatar_url: avatarUrl,
-                })
-              }
-              className="mt-5 w-full rounded-xl bg-indigo-300 p-4 px-5 shadow-lg transition-all duration-300 hover:bg-indigo-700 active:scale-95">
-              <Text className="text-center text-lg font-semibold text-white">Update Profile</Text>
-            </Pressable>
-          </View>
+          </ScrollView>
         </TouchableWithoutFeedback>
-      </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 }
