@@ -4,6 +4,7 @@ import TRListItem from '~/components/TRListItem';
 import { supabase } from '~/utils/supabase';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
+import NovoaRelayHomeLogo from '~/components/NovoaRelayHome';
 
 export default function EmployeeHome() {
   const [events, setEvents] = useState([]);
@@ -25,14 +26,10 @@ export default function EmployeeHome() {
 
   return (
     <View className="flex-1 bg-black">
-      <Stack.Screen
-        options={{
-          headerStyle: { height: 140, backgroundColor: 'black' },
-        }}
-      />
+      <NovoaRelayHomeLogo />
 
       {isEmpty ? (
-        <View className="flex-1 items-center justify-center px-6">
+        <View className="flex-1 items-center justify-center bg-black p-6">
           <Text className="mb-3 text-xl font-bold text-white">No Tow Jobs Yet</Text>
           <Text className="mb-6 text-center text-gray-400">
             Create your first trip to get started tracking your towing jobs!
@@ -45,7 +42,7 @@ export default function EmployeeHome() {
         </View>
       ) : (
         <FlatList
-          className="bg-black p-6"
+          className="p-6"
           data={events}
           renderItem={({ item }) => (
             <View>

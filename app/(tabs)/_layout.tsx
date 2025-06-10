@@ -4,7 +4,7 @@ import { TabBarIcon } from '../../components/TabBarIcon';
 import { useAuth } from '~/contexts/AuthProvider';
 import { useEffect, useState } from 'react';
 import { supabase } from '~/utils/supabase';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, SafeAreaView } from 'react-native';
 import NovoaRelayHomeLogo from '~/components/NovoaRelayHome';
 
 export default function TabLayout() {
@@ -26,8 +26,11 @@ export default function TabLayout() {
         setRole(data.role);
       }
       setLoading(false);
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      console.log('Session:', sessionData);
     }
-    console.log('User', user);
+
+    console.log('User', user, isAuthenticated);
 
     fetchUserRole();
   }, [user]);
@@ -38,7 +41,6 @@ export default function TabLayout() {
 
   if (isAuthenticated) {
     if (isOnboardingComplete === false) {
-      // supabase.auth.signOut();
       console.log('Redirecting to onboarding');
       return <Redirect href={'/(auth)/onboarding/nameScreen'} />;
     }
@@ -46,6 +48,7 @@ export default function TabLayout() {
 
   if (loading) {
     console.log('loading profile');
+
     console.log('Onboarding Status:', isOnboardingComplete);
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -65,10 +68,10 @@ export default function TabLayout() {
         name="index"
         options={{
           headerTitle: '',
-          headerLeft: () => (
-            <View className="bg-black px-2">
+          header: () => (
+            <SafeAreaView className="bg-black">
               <NovoaRelayHomeLogo />
-            </View>
+            </SafeAreaView>
           ),
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
@@ -78,6 +81,7 @@ export default function TabLayout() {
           ),
           headerStyle: { backgroundColor: 'black' }, // Makes header black
           headerTintColor: 'white', // Makes text/icons white
+          headerShown: false,
         }}
         initialParams={{ role }} // Pass role as a parameter to the index screen
       />
