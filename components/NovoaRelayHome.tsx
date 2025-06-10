@@ -13,7 +13,7 @@ export default function NovoaRelayHomeLogo({ fontSize = 48, className }: Props) 
       <MaskedView
         maskElement={
           <Text
-            className="text-center font-extrabold lowercase text-white"
+            className="font-extrabold lowercase text-white"
             style={{ fontSize }}
             allowFontScaling={false}>
             novoarelay

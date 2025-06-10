@@ -4,7 +4,7 @@ import { TabBarIcon } from '../../components/TabBarIcon';
 import { useAuth } from '~/contexts/AuthProvider';
 import { useEffect, useState } from 'react';
 import { supabase } from '~/utils/supabase';
-import { View, Text, Image, SafeAreaView } from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 import NovoaRelayHomeLogo from '~/components/NovoaRelayHome';
 
 export default function TabLayout() {

@@ -8,6 +8,7 @@ import { useLocalSearchParams } from 'expo-router';
 import MyTripsScreen from '~/app/screens/adminhomenavigator/MyTripsScreen';
 import MyCompanyTripsScreen from '~/app/screens/adminhomenavigator/MyCompanyTrips';
 import EmployeeHome from '~/app/screens/employeehomenavigator/EmployeeHome';
+import NovoaRelayHomeLogo from './NovoaRelayHome';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,7 +16,7 @@ export default function MiniPlayer() {
   const { role } = useLocalSearchParams();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = useMemo(() => ['85%', '15%'], []);
+  const snapPoints = useMemo(() => ['85%', '20%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     console.log('MiniPlayer sheet index:', index);
@@ -33,24 +34,42 @@ export default function MiniPlayer() {
         handleIndicatorStyle={{ backgroundColor: 'white' }}>
         <BottomSheetView className="m-2 h-full flex-1 bg-black p-2">
           {role === 'admin' ? (
-            <Tab.Navigator
-              screenOptions={{
-                tabBarLabelStyle: {
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  textTransform: 'none',
-                },
-                tabBarIndicatorStyle: {
-                  backgroundColor: 'white',
-                  height: 3,
-                },
-                tabBarStyle: { backgroundColor: '#000' },
-                tabBarActiveTintColor: 'white',
-                tabBarInactiveTintColor: 'gray',
-              }}>
-              <Tab.Screen name="MyTrips" component={MyTripsScreen} />
-              <Tab.Screen name="CompanyTrips" component={MyCompanyTripsScreen} />
-            </Tab.Navigator>
+            <>
+              <View className=" bg-black">
+                <NovoaRelayHomeLogo />
+              </View>
+              <Tab.Navigator
+                screenOptions={{
+                  tabBarLabelStyle: {
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    textTransform: 'none',
+                    color: 'gray', // Default; overridden by tint colors
+                  },
+                  tabBarStyle: {
+                    backgroundColor: 'black',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                  },
+                  tabBarActiveTintColor: 'black', // active label color
+                  tabBarInactiveTintColor: 'white', // inactive label color
+
+                  // Makes the indicator look like a pill/button
+                  tabBarIndicatorStyle: {
+                    backgroundColor: 'white', // the actual "button" background
+                    height: '80%',
+                    borderRadius: 20,
+                    marginHorizontal: 0,
+                    marginVertical: 5,
+                  },
+                  tabBarItemStyle: {
+                    borderRadius: 20,
+                  },
+                }}>
+                <Tab.Screen name="My Trips" component={MyTripsScreen} />
+                <Tab.Screen name="Company Trips" component={MyCompanyTripsScreen} />
+              </Tab.Navigator>
+            </>
           ) : (
             <EmployeeHome />
           )}
