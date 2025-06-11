@@ -68,19 +68,19 @@ export default function TabLayout() {
         name="index"
         options={{
           headerTitle: '',
-          header: () => (
-            <SafeAreaView className="bg-black">
-              <NovoaRelayHomeLogo />
-            </SafeAreaView>
-          ),
+          // header: () => (
+          //   <SafeAreaView className="bg-black">
+          //     <NovoaRelayHomeLogo />
+          //   </SafeAreaView>
+          // ),
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <HeaderButton />
-            </Link>
-          ),
-          headerStyle: { backgroundColor: 'black' }, // Makes header black
-          headerTintColor: 'white', // Makes text/icons white
+          // headerRight: () => (
+          //   <Link href="/modal" asChild>
+          //     <HeaderButton />
+          //   </Link>
+          // ),
+          // headerStyle: { backgroundColor: 'black' }, // Makes header black
+          // headerTintColor: 'white', // Makes text/icons white
           headerShown: false,
         }}
         initialParams={{ role }} // Pass role as a parameter to the index screen
