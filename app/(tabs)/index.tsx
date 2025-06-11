@@ -1,6 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet } from 'react-native';
-
+import { View, StyleSheet, Platform, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import MiniPlayer from '~/components/MiniPlayer';
 
@@ -11,7 +10,7 @@ export default function HomeTabs() {
     <View className="relative flex-1">
       {/* Map fills the screen */}
       <MapView
-        style={StyleSheet.absoluteFill}
+        style={styles.map}
         initialRegion={{
           latitude: 34.0522,
           longitude: -118.2437,
@@ -24,3 +23,10 @@ export default function HomeTabs() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+});
