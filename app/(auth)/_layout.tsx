@@ -1,7 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useAuth } from '~/contexts/AuthProvider';
-import { supabase } from '~/utils/supabase';
 
 export default function AuthTabLayout() {
   const router = useRouter();
